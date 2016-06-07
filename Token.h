@@ -11,13 +11,9 @@ public:
 	~Token();
 	void cleanup_token ();
 private:
-	// These are characters in the token that should be removed from it in the
-	// cleanup function.
-	const std::vector<char> chars_to_cleanup = {
-		'.', ',', '\'', ';'
-	};
-	friend std::ostream& operator<< (std::ostream&, const Token&);
+	bool is_clean_char (char);
 	std::string token_str;
+	friend std::ostream& operator<< (std::ostream&, const Token&);
 };
 
 #endif /* TOKEN_H */
