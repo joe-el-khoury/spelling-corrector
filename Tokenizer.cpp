@@ -4,13 +4,6 @@
 #include "Tokenizer.h"
 #include "Token.h"
 
-/*
-Tokenizer::Tokenizer (std::string _str_to_tokenize) {
-	this->tokens = Tokenizer::TokenList();
-	this->str_to_tokenize = _str_to_tokenize;
-}
-*/
-
 Tokenizer::Tokenizer (const std::string& _str_to_tokenize) {
 	this->tokens = Tokenizer::TokenList();
 	this->str_to_tokenize = _str_to_tokenize;
