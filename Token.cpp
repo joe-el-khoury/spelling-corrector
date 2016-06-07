@@ -13,8 +13,6 @@ Token::~Token() {
  * Cleans up the token, removing any unecessary characters.
  */
 void Token::cleanup_token () {
-	// Just so I don't have to type in (this->...) every time. It's tedious!
-	const std::vector<char>* chars_to_cleanup = &(this->chars_to_cleanup);
 	// Go through the token, cleaning it up.
 	for (char& c: this->token_str) {
 		// The character should be lowercase.
