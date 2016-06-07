@@ -17,7 +17,8 @@ void Tokenizer::tokenize (char _delimiter) {
 	while (end <= std::string::npos) {
 		std::string token_substr = (this->str_to_tokenize).substr(start, end-start);
 		if (token_substr.length() > 0) {
-			(this->tokens).push_back(std::make_unique<Token>(token_substr));
+			Token token_to_add(token_substr);
+			(this->tokens).push_back(token_to_add);
 		}
 
 		if (end == std::string::npos) {

@@ -9,14 +9,10 @@
 #include "Token.h"
 
 class Tokenizer {
-	// A unique pointer type to a token.
-	typedef std::unique_ptr<Token> TokenPtr;
 	// A type that is just a list of Token pointers.
-	typedef std::vector<TokenPtr> TokenList;
+	typedef std::vector<Token> TokenList;
 public:
 	Tokenizer (const std::string&);
-	Tokenizer (const Tokenizer&) = delete;
-	Tokenizer& operator= (const Tokenizer&) = delete;
 	void tokenize (char);
 	Tokenizer::TokenList tokens;
 private:
