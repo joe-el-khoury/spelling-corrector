@@ -8,7 +8,7 @@ class Token {
 public:
 	Token (const std::string&);
 	Token (const Token&) = delete;
-	Token& operator= (const Token&) = default;
+	Token& operator= (const Token&) = delete;
 	void cleanup_token ();
 private:
 	friend std::ostream& operator<< (std::ostream&, const Token&);
