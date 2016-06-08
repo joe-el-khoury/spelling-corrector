@@ -15,8 +15,8 @@ void Token::cleanup_token () {
 		// The character should be lowercase.
 		c = std::tolower(c);
 		if (!(this->is_clean_char(c))) {
-			// If the character is not clean then ignore it.
-			c = '\0';
+			// If the character is not clean then get rid of it.
+			c = 0x00;
 		}
 	}
 }
