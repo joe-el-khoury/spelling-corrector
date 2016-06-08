@@ -6,9 +6,6 @@ Token::Token (const std::string& _token_str) {
 	this->token_str = _token_str;
 }
 
-Token::~Token() {
-}
-
 /**
  * Cleans up the token, removing any unecessary characters.
  */

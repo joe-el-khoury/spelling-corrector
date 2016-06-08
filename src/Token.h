@@ -8,7 +8,6 @@
 class Token {
 public:
 	Token (const std::string&);
-	~Token();
 	void cleanup_token ();
 private:
 	bool is_clean_char (char);
