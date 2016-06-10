@@ -23,7 +23,7 @@ FileReader::~FileReader () {
 /**
  * Temporary function to read a number of characters from the files.
  */
-std::string FileReader::get_string (int num_chars) {
+std::string FileReader::get_string_of_size (int num_chars) {
     // The number of characters read so far.
     int chars_so_far = 0;
     
