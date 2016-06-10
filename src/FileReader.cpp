@@ -19,3 +19,28 @@ FileReader::FileReader (const std::string& _file_name) {
 FileReader::~FileReader () {
     (this->fs).close();
 }
+
+/**
+ * Temporary function to read a number of characters from the files.
+ */
+std::string FileReader::get_string (int num_chars) {
+    // The number of characters read so far.
+    int chars_so_far = 0;
+    
+    // Construct a string of the size specified by the parameter.
+    std::string ret = std::string(num_chars, '\0');
+    for (char& c: ret) {
+        if (chars_so_far >= num_chars) {
+            break;
+        }
+
+        if ((this->fs).get(c)) {
+            // If a character is read successfully from the file stream
+            // into the string then increment the number of characters
+            // read so far.
+            chars_so_far++;
+        }
+    }
+
+    return ret;
+}
