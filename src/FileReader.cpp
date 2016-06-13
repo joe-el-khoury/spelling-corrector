@@ -6,6 +6,10 @@
  * Opens the file stream.
  */
 FileReader::FileReader (const std::string& _file_name) {
+    // Set both flags to false.
+    this->fail = false;
+    this->done_reading = false;
+
     (this->fs).open(_file_name);
     if ((this->fs).fail()) {
         std::cout << "The file <" << _file_name << "> could not be opened." << std::endl;
