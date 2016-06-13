@@ -19,6 +19,8 @@ public:
 
     // Indicates whether any operation on the file (usually opening) has failed.
     bool fail;
+    // Indicates whether the file has been read in its entirety.
+    bool done_reading;
 private:
     std::ifstream fs;
 };

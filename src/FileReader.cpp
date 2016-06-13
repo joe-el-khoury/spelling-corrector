@@ -49,6 +49,13 @@ std::string FileReader::get_string_of_size (int _buff_size) {
  * Reads a bunch of characters up to a certain character.
  */
 std::string FileReader::get_string_up_to (char _up_to) {
+    // I will check only for end of file, because really that's all I care about.
+    // Not a very reliable file reading API haha.
+    this->done_reading = (bool)(this->fs).eof();
+    if (this->done_reading) {
+        return std::string();
+    }
+
     std::string ret;
     std::getline(this->fs, ret, _up_to);
     return ret;
