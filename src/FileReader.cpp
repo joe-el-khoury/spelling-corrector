@@ -44,3 +44,12 @@ std::string FileReader::get_string_of_size (int _buff_size) {
 
     return ret;
 }
+
+/**
+ * Reads a bunch of characters up to a certain character.
+ */
+std::string FileReader::get_string_up_to (char _up_to) {
+    std::string ret;
+    std::getline(this->fs, ret, _up_to);
+    return ret;
+}
