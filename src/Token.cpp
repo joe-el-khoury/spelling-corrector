@@ -6,6 +6,10 @@ Token::Token (const std::string& _token_str) {
 	this->token_str = _token_str;
 }
 
+bool Token::operator== (const Token& _other) {
+    return (this->get_token_str() == _other.get_token_str());
+}
+
 /**
  * Cleans up the token, removing any unecessary characters.
  */
@@ -19,6 +23,10 @@ void Token::cleanup_token () {
 			c = 0x00;
 		}
 	}
+}
+
+std::string Token::get_token_str () const {
+    return this->token_str;
 }
 
 /**
