@@ -1,6 +1,3 @@
-#include <string>
-#include <utility>
-
 #include "TokenHistogram.h"
 #include "Token.h"
 
@@ -26,4 +23,15 @@ void TokenHistogram::add_token (const Token& _to_add) {
         // Add the token with the default count.
         (this->histogram).insert({_to_add, this->default_value});
     }
+}
+
+/**
+ * Get the count of the particular token. If the token does not exist, then
+ * just return the default value.
+ */
+int TokenHistogram::get_count (const Token& _to_get) {
+    TokenHistogram::Histogram::iterator got = (this->histogram).find(_to_get);
+    bool token_exists = (got != (this->histogram).end());
+
+    return token_exists ? got->second : this->default_value;
 }
