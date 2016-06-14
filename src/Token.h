@@ -7,16 +7,16 @@
 
 class Token {
 public:
-	Token (const std::string&);
+    Token (const std::string&);
     // Equality operator used for defining the hashing function.
     bool operator== (const Token&);
 
-	void cleanup_token ();
+    void cleanup_token ();
     std::string get_token_str () const;
 private:
-	bool is_clean_char (char);
-	std::string token_str;
-	friend std::ostream& operator<< (std::ostream&, const Token&);
+    bool is_clean_char (char);
+    std::string token_str;
+    friend std::ostream& operator<< (std::ostream&, const Token&);
 };
 
 #endif /* TOKEN_H */
