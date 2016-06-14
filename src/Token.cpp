@@ -6,7 +6,7 @@ Token::Token (const std::string& _token_str) {
     this->token_str = _token_str;
 }
 
-bool Token::operator== (const Token& _other) {
+bool Token::operator== (const Token& _other) const {
     return (this->get_token_str() == _other.get_token_str());
 }
 
