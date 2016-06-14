@@ -33,6 +33,10 @@ class TokenHistogram {
     typedef std::unordered_map<Token, int> Histogram;
 public:
     TokenHistogram ();
+
+    // Add/get a token to/from the histogram.
+    void add_token (const Token&);
+    int  get_count (const Token&);
 private:
     // The actual histogram son!
     Histogram histogram;
