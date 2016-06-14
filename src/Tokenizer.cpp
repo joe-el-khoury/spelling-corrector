@@ -1,6 +1,5 @@
-#include <iostream>
-#include <memory>
-#include <algorithm>
+#include <string>
+#include <vector>
 
 #include "Tokenizer.h"
 #include "FileReader.h"
