@@ -28,7 +28,7 @@ namespace std {
 }
 
 class TokenHistogram {
-    // The histogram is just an unordered map that maps strings to
+    // The histogram is just an unordered map that maps tokens to
     // integers.
     typedef std::unordered_map<Token, int> Histogram;
 public:
