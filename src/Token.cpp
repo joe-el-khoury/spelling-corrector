@@ -30,19 +30,11 @@ std::string Token::get_token_str () const {
 }
 
 /**
- * Checks if a character is "clean". A clean character is one that is either a digit (0-9),
- * an uppercase character (A-Z), or a lowercase character (a-z).
+ * Checks if a character is "clean". A clean character is one that is either
+ * an uppercase character (A-Z) or a lowercase character (a-z).
  */
 bool Token::is_clean_char (char _char) {
-    bool is_digit        = (0x30 <= _char && _char <= 0x39);
     bool is_upper_letter = (0x41 <= _char && _char <= 0x5A);
     bool is_lower_letter = (0x61 <= _char && _char <= 0x7A);
-    return (is_digit || is_upper_letter || is_lower_letter);
-}
-
-/**
- * For printing purposes.
- */
-std::ostream& operator<< (std::ostream& os, const Token& _token) {
-    return (os << _token.token_str);
+    return (is_upper_letter || is_lower_letter);
 }
