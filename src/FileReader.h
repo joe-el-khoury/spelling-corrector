@@ -14,7 +14,7 @@ public:
     FileReader (const FileReader&) = delete;
     FileReader& operator= (const FileReader&) = delete;
 
-    std::string get_string_of_size (int);
+    std::string get_buffer_of_size (int);
     std::string get_string_up_to (char);
 
     // Indicates whether any operation on the file (usually opening) has failed.

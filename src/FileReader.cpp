@@ -29,13 +29,19 @@ FileReader::~FileReader () {
 /**
  * Reads a number of characters from the file, specified by the buffer size.
  */
-std::string FileReader::get_string_of_size (int _buff_size) {
+std::string FileReader::get_buffer_of_size (int _buff_size) {
+    // Don't read the file if we're already done with it.
+    if (this->done_reading || (this->fs).eof()) {
+        this->done_reading = true;
+        return std::string();
+    }
+    
     // The number of characters read so far.
     int chars_so_far = 0;
     
     // Construct a string of the size specified by the parameter.
     std::string ret = std::string(_buff_size, '\0');
-    for (char& c: ret) {
+    for (char& c : ret) {
         if (chars_so_far >= _buff_size) {
             break;
         }
@@ -55,10 +61,9 @@ std::string FileReader::get_string_of_size (int _buff_size) {
  * Reads a bunch of characters up to a certain character.
  */
 std::string FileReader::get_string_up_to (char _up_to) {
-    // I will check only for end of file, because really that's all I care about.
-    // Not a very reliable file reading API haha.
-    this->done_reading = (bool)(this->fs).eof();
-    if (this->done_reading) {
+    // Check if we've reached the end of the file.
+    if (this->done_reading || (this->fs).eof()) {
+        this->done_reading = true;
         return std::string();
     }
 
