@@ -37,6 +37,9 @@ public:
     // Add/get a token to/from the histogram.
     void add_token (const Token&);
     int  get_count (const Token&);
+
+    // For debugging purposes.
+    void print ();
 private:
     // The actual histogram son!
     Histogram histogram;

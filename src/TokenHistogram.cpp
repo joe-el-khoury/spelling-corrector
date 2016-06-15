@@ -35,3 +35,20 @@ int TokenHistogram::get_count (const Token& _to_get) {
 
     return token_exists ? got->second : this->default_value;
 }
+
+/**
+ * Prints the histogram in a debugging friendly way.
+ */
+void TokenHistogram::print () {
+    // Used in the loop below.
+    std::string token_str;
+    int token_count;
+
+    TokenHistogram::Histogram::const_iterator it;
+    for (it = (this->histogram).begin(); it != (this->histogram).end(); it++) {
+        token_str = (it->first).get_token_str();
+        token_count = it->second;
+
+        std::cout << token_str << " => " << token_count << " occurence(s)." << std::endl;
+    }
+}
