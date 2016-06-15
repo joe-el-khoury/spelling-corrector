@@ -30,7 +30,7 @@ namespace std {
 class TokenHistogram {
     // The histogram is just an unordered map that maps tokens to
     // integers.
-    typedef std::unordered_map<Token, int> Histogram;
+    typedef std::unordered_map<Token, unsigned long> Histogram;
 public:
     TokenHistogram ();
 
@@ -46,7 +46,7 @@ private:
     
     // The default value any token takes when added to the histogram or
     // when an undefined token is accessed.
-    const int default_value = 1;
+    const unsigned long default_value = 1;
 };
 
 #endif /* TOKENHISTOGRAM_H */

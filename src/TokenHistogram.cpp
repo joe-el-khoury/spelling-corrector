@@ -42,7 +42,7 @@ int TokenHistogram::get_count (const Token& _to_get) {
 void TokenHistogram::print () {
     // Used in the loop below.
     std::string token_str;
-    int token_count;
+    unsigned long token_count;
 
     TokenHistogram::Histogram::const_iterator it;
     for (it = (this->histogram).begin(); it != (this->histogram).end(); it++) {
