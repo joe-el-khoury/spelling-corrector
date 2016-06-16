@@ -17,8 +17,13 @@ void Tokenizer::tokenize (char _delimiter) {
         
         if (token_str.length() > 0) {
             Token token_to_add(token_str);
-            // Remove any ugly characters from the token.
             token_to_add.cleanup_token();
+            
+            // Skip any empty tokens.
+            if (token_to_add == "") {
+                continue;
+            }
+
             (this->tokens).push_back(token_to_add);
         }
     }

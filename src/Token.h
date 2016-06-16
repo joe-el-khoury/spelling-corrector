@@ -8,8 +8,8 @@
 class Token {
 public:
     Token (const std::string&);
-    // Equality operator used for defining the hashing function.
     bool operator== (const Token&) const;
+    bool operator== (const std::string&) const;
 
     void cleanup_token ();
     std::string get_token_str () const;
