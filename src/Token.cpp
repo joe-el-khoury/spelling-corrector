@@ -15,22 +15,14 @@ bool Token::operator== (const std::string& _other_str) const {
 }
 
 /**
- * Cleans up the token, removing any unecessary characters.
+ * Delimits the token at unclean characters with a space.
  */
-void Token::cleanup_token () {
-    // Create a new string just in case the current one is unclean.
-    std::string new_str;
-    new_str.reserve((this->token_str).length());
-
-    // Go through the token, cleaning it up.
+void Token::delimit_token () {
     for (char& c : this->token_str) {
-        c = std::tolower(c);
-        if (this->is_clean_char(c)) {
-            new_str += c;
+        if (!(this->is_clean_char(c))) {
+            c = this->delimit_token_with;
         }
     }
-
-    this->token_str = new_str;
 }
 
 std::string Token::get_token_str () const {

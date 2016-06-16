@@ -13,7 +13,10 @@ class Tokenizer {
 public:
     Tokenizer (const std::string&);
     void tokenize (char);
+    
+    Tokenizer::TokenList get_tokens ();
 private:
+    Tokenizer::TokenList split_and_clean_token (Token&);
     Tokenizer::TokenList tokens;
     FileReader fr;
     std::string str_to_tokenize;

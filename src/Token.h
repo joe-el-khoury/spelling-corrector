@@ -11,12 +11,14 @@ public:
     bool operator== (const Token&) const;
     bool operator== (const std::string&) const;
 
-    void cleanup_token ();
+    // Used for cleaning up the token.
+    void delimit_token ();
+    const char delimit_token_with = ' ';
+
     std::string get_token_str () const;
 private:
     bool is_clean_char (char);
     std::string token_str;
-    friend std::ostream& operator<< (std::ostream&, const Token&);
 };
 
 #endif /* TOKEN_H */
