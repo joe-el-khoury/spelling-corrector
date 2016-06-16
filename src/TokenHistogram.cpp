@@ -39,7 +39,7 @@ int TokenHistogram::get_count (const Token& _to_get) {
 /**
  * Prints the histogram in a debugging friendly way.
  */
-void TokenHistogram::print () {
+void TokenHistogram::print (unsigned long _threshold) {
     // Used in the loop below.
     std::string token_str;
     unsigned long token_count;
@@ -49,6 +49,8 @@ void TokenHistogram::print () {
         token_str = (it->first).get_token_str();
         token_count = it->second;
 
-        std::cout << token_str << " => " << token_count << " occurence(s)." << std::endl;
+        if (token_count >= _threshold) {
+            std::cout << token_str << " => " << token_count << " occurence(s)." << std::endl;
+        }
     }
 }

@@ -39,7 +39,7 @@ public:
     int  get_count (const Token&);
 
     // For debugging purposes.
-    void print ();
+    void print (unsigned long=0);
 private:
     // The actual histogram son!
     Histogram histogram;
