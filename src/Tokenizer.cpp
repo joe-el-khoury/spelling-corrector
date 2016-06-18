@@ -44,8 +44,7 @@ Tokenizer::TokenList Tokenizer::split_and_clean_token (Token& _to_clean) {
     _to_clean.delimit_token();
 
     Tokenizer::TokenList ret;
-
-    std::string temp_token_str;
+    std::string token_str;
     // A flag that is set to true when we are building the string from
     // clean characters.
     bool building_str = false;
@@ -53,22 +52,21 @@ Tokenizer::TokenList Tokenizer::split_and_clean_token (Token& _to_clean) {
     for (char c : _to_clean.get_token_str()) {
         if (c != _to_clean.delimit_token_with) {
             building_str = true;
-            temp_token_str += tolower(c);
+            token_str += tolower(c);
         
-        } else {
-            if (building_str) {
-                ret.push_back(Token(temp_token_str));   
+        } else if (building_str) {
+                ret.push_back(Token(token_str));   
                 building_str = false;
 
                 // Reset the string to start building a new one.
-                temp_token_str = std::string();
+                token_str = std::string();
             }
         }
     }
 
     // Don't forget to add the last token string!
     if (building_str) {
-        ret.push_back(Token(temp_token_str));
+        ret.push_back(Token(token_str));
     }
 
     return ret;
