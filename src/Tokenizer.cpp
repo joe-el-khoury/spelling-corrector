@@ -3,24 +3,19 @@
 #include <algorithm>
 
 #include "Tokenizer.h"
-#include "FileReader.h"
 #include "Token.h"
-
-Tokenizer::Tokenizer (const std::string& _str_to_tokenize) {
-    this->str_to_tokenize = _str_to_tokenize;
-}
 
 Tokenizer::TokenList Tokenizer::get_tokens () {
     return this->tokens;
 }
 
-void Tokenizer::tokenize (char _delimiter) {
+void Tokenizer::tokenize (const std::string& _to_tokenize, char _delimiter) {
     size_t start = 0;
-    size_t end = (this->str_to_tokenize).find_first_of(_delimiter);
+    size_t end = _to_tokenize.find_first_of(_delimiter);
 
     while (end <= std::string::npos) {
         // Get the string from the start position to the delimiter.
-        std::string token_substr = (this->str_to_tokenize).substr(start, end-start);
+        std::string token_substr = _to_tokenize.substr(start, end-start);
         if (token_substr.length() > 0) {
             Token token_to_add(token_substr);
             // Remove ugly characters from the token.
@@ -35,7 +30,7 @@ void Tokenizer::tokenize (char _delimiter) {
         }
 
         start = end+1;
-        end = (this->str_to_tokenize).find_first_of(_delimiter, start);
+        end = _to_tokenize.find_first_of(_delimiter, start);
     }
 }
 
