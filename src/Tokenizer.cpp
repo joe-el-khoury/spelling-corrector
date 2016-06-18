@@ -6,7 +6,8 @@
 #include "FileReader.h"
 #include "Token.h"
 
-Tokenizer::Tokenizer (const std::string& _file_name) : fr(_file_name) {
+Tokenizer::Tokenizer (const std::string& _str_to_tokenize) {
+    this->str_to_tokenize = _str_to_tokenize;
 }
 
 Tokenizer::TokenList Tokenizer::get_tokens () {
@@ -14,21 +15,27 @@ Tokenizer::TokenList Tokenizer::get_tokens () {
 }
 
 void Tokenizer::tokenize (char _delimiter) {
-    std::string token_str;
-    // Keep reading the file until the end. Never quit!
-    while (!(this->fr).done_reading) {
-        // Read the file until the delimiter.
-        token_str = (this->fr).get_string_up_to(_delimiter);
-        
-        if (token_str.length() > 0) {
-            Token token_to_add(token_str);
-            Tokenizer::TokenList v = this->split_and_clean_token(token_to_add);
+    size_t start = 0;
+    size_t end = 0;
 
-            // Add the tokens from the split to the list.
-            for (Token& t : v) {
+    while (end <= std::string::npos) {
+        // Get the string from the start position to the delimiter.
+        std::string token_substr = (this->str_to_tokenize).substr(start, end-start);
+        if (token_substr.length() > 0) {
+            Token token_to_add(token_substr);
+            // Remove ugly characters from the token.
+            Tokenizer::TokenList split_token = this->split_and_clean_token(token_to_add);
+            for (Token& t : split_token) {
                 (this->tokens).push_back(t);
             }
         }
+
+        if (end == std::string::npos) {
+            break;
+        }
+
+        start = end+1;
+        end = (this->str_to_tokenize).find_first_of(_delimiter, start);
     }
 }
 

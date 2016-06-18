@@ -18,7 +18,6 @@ public:
 private:
     Tokenizer::TokenList split_and_clean_token (Token&);
     Tokenizer::TokenList tokens;
-    FileReader fr;
     std::string str_to_tokenize;
 };
 
