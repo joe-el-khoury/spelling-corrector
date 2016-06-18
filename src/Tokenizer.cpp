@@ -16,7 +16,7 @@ Tokenizer::TokenList Tokenizer::get_tokens () {
 
 void Tokenizer::tokenize (char _delimiter) {
     size_t start = 0;
-    size_t end = 0;
+    size_t end = (this->str_to_tokenize).find_first_of(_delimiter);
 
     while (end <= std::string::npos) {
         // Get the string from the start position to the delimiter.
