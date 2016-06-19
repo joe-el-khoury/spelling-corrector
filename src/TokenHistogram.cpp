@@ -1,10 +1,6 @@
 #include "TokenHistogram.h"
 #include "Token.h"
 
-TokenHistogram::TokenHistogram () {
-    this->histogram = TokenHistogram::Histogram();
-}
-
 /**
  * Add a token to the histogram.
  * All that has to be done is to increment the count of the token.
