@@ -12,7 +12,7 @@
 class SpellingCorrector {
 public:
     SpellingCorrector ();
-
+    
     // Trains the spelling corrector on a file.
     void train (const std::string&);
 private:
