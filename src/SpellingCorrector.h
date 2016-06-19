@@ -16,13 +16,14 @@ public:
     // Trains the spelling corrector on a file.
     void train (const std::string&);
 private:
-    // The parts of the engine.
+    // The essential parts of the engine.
     std::unique_ptr<FileReader> file_reader;
     std::unique_ptr<Tokenizer> tokenizer;
     std::unique_ptr<TokenHistogram> token_histogram;
     
     // The names of the files we've already trained on.
-    std::vector<std::string> file_names;
+    std::vector<std::string> files_trained_on;
+    bool already_trained_on (const std::string&) const;
 };
 
 #endif /* SPELLINGCORRECTOR_H */
