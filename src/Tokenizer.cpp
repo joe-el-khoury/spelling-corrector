@@ -55,12 +55,11 @@ Tokenizer::TokenList Tokenizer::split_and_clean_token (Token& _to_clean) {
             token_str += tolower(c);
         
         } else if (building_str) {
-                ret.push_back(Token(token_str));   
-                building_str = false;
+            ret.push_back(Token(token_str));   
+            building_str = false;
 
-                // Reset the string to start building a new one.
-                token_str = std::string();
-            }
+            // Reset the string to start building a new one.
+            token_str = std::string();
         }
     }
 
