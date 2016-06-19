@@ -60,7 +60,7 @@ std::string FileReader::get_buffer_of_size (int _buff_size) {
 /**
  * Reads a bunch of characters up to a certain character.
  */
-std::string FileReader::get_string_up_to (char _up_to) {
+std::string FileReader::read_up_to (char _up_to) {
     // Check if we've reached the end of the file.
     if (this->done_reading || (this->fs).eof()) {
         this->done_reading = true;
