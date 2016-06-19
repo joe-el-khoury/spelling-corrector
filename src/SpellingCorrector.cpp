@@ -42,7 +42,7 @@ void SpellingCorrector::train (const std::string& _file_name) {
         // 1) Read a line from the file.
         std::string read_line = this->file_reader->read_up_to('\n');
 
-        // 2) Tokenize the line just read at the spaces.
+        // 2) Tokenize the line at the spaces.
         this->tokenizer->tokenize(read_line, ' ');
     }
 
