@@ -7,16 +7,16 @@
 #include "Token.h"
 
 namespace std {
-    /**
-     * Template specialization for hashing the Token object.
-     */
-    template<>
-    struct hash<Token> {
-        size_t operator() (const Token& _other) const {
-            // Basically all I'm doing is hashing the string of the token object.
-            return std::hash<std::string>()(_other.get_token_str());
-        }
-    };
+/**
+ * Template specialization for hashing the Token object.
+ */
+template<>
+struct hash<Token> {
+    size_t operator() (const Token& _other) const {
+        // Basically all I'm doing is hashing the string of the token object.
+        return std::hash<std::string>()(_other.get_token_str());
+    }
+};
 }
 
 class TokenHistogram {
@@ -24,12 +24,12 @@ class TokenHistogram {
     // integers.
     typedef std::unordered_map<Token, unsigned long> Histogram;
 public:
-    // Add/get a token to/from the histogram.
+    void add_tokens (const std::vector<Token>&);
     void add_token (const Token&);
     int  get_count (const Token&);
 
     // For debugging purposes.
-    void print (unsigned long=0);
+    void print (unsigned long=0) const;
 private:
     // The actual histogram son!
     Histogram histogram;

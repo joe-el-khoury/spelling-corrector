@@ -2,6 +2,15 @@
 #include "Token.h"
 
 /**
+ * Add a bunch of tokens to the histogram.
+ */
+void TokenHistogram::add_tokens (const std::vector<Token>& _tokens_to_add) {
+    for (const Token& token_to_add : _tokens_to_add) {
+        this->add_token(token_to_add);
+    }
+}
+
+/**
  * Add a token to the histogram.
  * All that has to be done is to increment the count of the token.
  */
@@ -35,7 +44,7 @@ int TokenHistogram::get_count (const Token& _to_get) {
 /**
  * Prints the histogram in a debugging friendly way.
  */
-void TokenHistogram::print (unsigned long _threshold) {
+void TokenHistogram::print (unsigned long _threshold) const {
     // Used in the loop below.
     std::string token_str;
     unsigned long token_count;
