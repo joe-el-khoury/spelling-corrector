@@ -8,7 +8,7 @@ LFLAGS = -Wall $(DEBUG)
 bin/Main : $(OBJS)
 	$(CC) $(EXTRAFLAGS) $(LFLAGS) $(OBJS) -o bin/Main
 
-bin/Main.o : src/Main.cpp src/Token.h src/Tokenizer.h src/TokenHistogram.h src/FileReader.h
+bin/Main.o : src/Main.cpp src/Token.h src/Tokenizer.h src/TokenHistogram.h src/FileReader.h src/SpellingCorrector.h
 	$(CC) $(EXTRAFLAGS) $(CFLAGS) src/Main.cpp -o bin/Main.o
 
 bin/FileReader.o : src/FileReader.cpp src/FileReader.h
@@ -25,6 +25,9 @@ bin/Tokenizer.o : src/Tokenizer.cpp src/Tokenizer.h src/Token.h src/FileReader.h
 
 bin/SpellingCorrector.o : src/SpellingCorrector.cpp src/SpellingCorrector.h src/Tokenizer.h src/TokenHistogram.h src/FileReader.h
 	$(CC) $(EXTRAFLAGS) $(CFLAGS) src/SpellingCorrector.cpp -o bin/SpellingCorrector.o
+
+bin/TokenEditor.o : src/TokenEditor.cpp src/TokenEditor.h src/Token.h
+	$(CC) $(EXTRAFLAGS) $(CFLAGS) src/TokenEditor.cpp -o bin/TokenEditor.o
 
 clean:
 	\rm bin/*.o bin/Main
