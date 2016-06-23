@@ -7,13 +7,14 @@
 
 class Token {
 public:
+    Token () { /* empty constructor */ };
     Token (const std::string&);
     bool operator== (const Token&) const;
     bool operator== (const std::string&) const;
 
     // Used for cleaning up the token.
     void delimit_token ();
-    const char delimit_token_with = ' ';
+    char delimit_token_with = ' ';
 
     std::string get_token_str () const;
 private:
