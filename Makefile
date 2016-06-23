@@ -1,4 +1,4 @@
-OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o bin/Tokenizer.o bin/SpellingCorrector.o
+OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o
 CC = g++
 DEBUG = -g
 EXTRAFLAGS = -std=c++14
