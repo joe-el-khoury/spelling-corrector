@@ -73,7 +73,7 @@ deletes TokenEditor::get_delete_edits (const Token& _to_edit) {
 
     splits split_edits = get_split_edits(_to_edit);
     
-    // The index of the vector we will be returning.
+    // The index of the vector we will be adding to.
     int i = 0;
     for (const split_pair& split : split_edits) {
         // Extract the strings from each pair.
