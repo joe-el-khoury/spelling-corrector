@@ -85,7 +85,7 @@ deletes TokenEditor::get_delete_edits (const Token& _to_edit) {
             continue;
         }
 
-        // Create the deletion from the split, ignoring the second split's second character.
+        // Create the deletion from the split, ignoring the second split's first character.
         deletion = first_str + splice_string_from_to(second_str, 1, second_str.length());
 
         ret[i] = Token(deletion);
