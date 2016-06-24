@@ -79,7 +79,7 @@ deletes TokenEditor::get_delete_edits (const Token& _to_edit) {
     std::string deletion;
     deletion.reserve(token_str_length-1);
 
-    splits split_edits = get_split_edits(_to_edit);
+    splits split_edits = this->get_split_edits(_to_edit);
     
     // The index of the vector we will be adding to.
     int i = 0;
@@ -124,6 +124,36 @@ transposes TokenEditor::get_transpose_edits (const Token& _to_edit) {
         swap_str_chars(transpose, i, i+1);
 
         ret[i] = transpose;
+    }
+
+    return ret;
+}
+
+/**
+ * Creates edits of the tokens as replacements.
+ * get_replace_edits("joe") = "aoe", ... "zoe", ... "jae", ... "jze", ... "joa", ... "joz".
+ */
+replaces TokenEditor::get_replace_edits (const Token& _to_edit) {
+    std::string token_str = _to_edit.get_token_str();
+    
+    // The number of replaces is equal to the length of the string times 26.
+    unsigned int token_str_length = token_str.length();
+    transposes ret(token_str_length*26);
+
+    // Each replace length will be equal to the length of the token.
+    std::string replace;
+    replace.reserve(token_str_length);
+
+    // The index of the vector that will store the replaces.
+    int j = 0;
+    // Go through the string, replacing characters.
+    for (unsigned int i = 0; i < token_str_length; ++i) {
+        replace = token_str;
+        for (const char& alphabet_char : this->alphabet) {
+            replace[i] = alphabet_char;
+            ret[j] = Token(replace);
+            j++;
+        }
     }
 
     return ret;
