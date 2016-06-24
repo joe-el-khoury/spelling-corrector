@@ -6,19 +6,22 @@
 
 #include "Token.h"
 
-// Custom types.
 typedef std::pair<Token, Token> split_pair;
 typedef std::vector<split_pair> splits;
+
 typedef std::vector<Token> deletes;
 typedef std::vector<Token> transposes;
 typedef std::vector<Token> replaces;
+typedef std::vector<Token> inserts;
 
 class TokenEditor {
 public:
+    void x (std::string&);
     // Edit functions.
     deletes    get_delete_edits    (const Token&);
     transposes get_transpose_edits (const Token&);
     replaces   get_replace_edits   (const Token&);
+    inserts    get_insert_edits    (const Token&);
     
 private:
     splits get_split_edits (const Token&);

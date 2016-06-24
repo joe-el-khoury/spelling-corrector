@@ -16,14 +16,14 @@ void swap_str_chars (std::string& _to_swap, int _pos1, int _pos2) {
 /**
  * Just like Python's awesome string splicing capabilities.
  */
-std::string splice_string_from_to (const std::string& _to_splice, size_t _from, size_t _to) {
-    return _to_splice.substr(_from, _to);
+std::string splice_string_from_to (const std::string& _to_splice, size_t _from, size_t _to=std::string::npos) {
+    return (_from >= _to_splice.length()) ? std::string() : _to_splice.substr(_from, _to);
 }
 
 /**
  * splice_token_from_to("hello", 0, 3) = "hel".
  */
-Token splice_token_from_to (const Token& _to_splice, size_t _from, size_t _to) {
+Token splice_token_from_to (const Token& _to_splice, size_t _from, size_t _to=std::string::npos) {
     std::string token_str = _to_splice.get_token_str();
     std::string spliced_token_str = splice_string_from_to(token_str, _from, _to);
     
@@ -149,9 +149,45 @@ replaces TokenEditor::get_replace_edits (const Token& _to_edit) {
     // Go through the string, replacing characters.
     for (unsigned int i = 0; i < token_str_length; ++i) {
         replace = token_str;
-        for (const char& alphabet_char : this->alphabet) {
+        for (const char alphabet_char : this->alphabet) {
             replace[i] = alphabet_char;
             ret[j] = Token(replace);
+            j++;
+        }
+    }
+
+    return ret;
+}
+
+/**
+ * Creates edits of the token as inserts.
+ * get_insert_edits("joe") = "ajoe", ... "zjoe", ... "jaoe", ... "jzoe", ... "joae", ... "joze", ...
+ */
+inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
+    std::string token_str = _to_edit.get_token_str();
+
+    // The number of inserts is equal to 26 times the (length of the token + 1).
+    unsigned int token_str_length = token_str.length();
+    inserts ret((token_str_length+1)*26);
+
+    // Each insert will be equal to the length of the token plus one.
+    std::string insert;
+    insert.reserve(token_str_length+1);
+
+    // The index of the vector that will store the inserts.
+    int j = 0;
+    // Go through the string, inserting into it.
+    for (unsigned int i = 0; i < token_str_length+1; ++i) {
+        for (const char alphabet_char : this->alphabet) {
+            // Reset the string every time.
+            insert = token_str;
+            
+            // The character we are inserting into the string. It's supposed to be
+            // a string.
+            std::string alphabet_str(1, alphabet_char);
+            
+            insert.insert(i, alphabet_str);
+            ret[j] = insert;
             j++;
         }
     }
