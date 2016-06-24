@@ -5,6 +5,15 @@
 //////////////////////////////////////////////////////////////////
 
 /**
+ * Swap two characters in a string.
+ */
+void swap_str_chars (std::string& _to_swap, int _pos1, int _pos2) {
+    char temp_char  = _to_swap[_pos1];
+    _to_swap[_pos1] = _to_swap[_pos2];
+    _to_swap[_pos2] = temp_char;
+}
+
+/**
  * Just like Python's awesome string splicing capabilities.
  */
 std::string splice_string_from_to (const std::string& _to_splice, size_t _from, size_t _to) {
@@ -66,8 +75,7 @@ deletes TokenEditor::get_delete_edits (const Token& _to_edit) {
     unsigned int token_str_length = token_str.length();
     deletes ret(token_str_length);
 
-    // The token's deletion.
-    // Each deletion length will be the length of the token string minus one.
+    // Each deletion length will be the length of the token minus one.
     std::string deletion;
     deletion.reserve(token_str_length-1);
 
@@ -90,6 +98,32 @@ deletes TokenEditor::get_delete_edits (const Token& _to_edit) {
 
         ret[i] = Token(deletion);
         i++;
+    }
+
+    return ret;
+}
+
+/**
+ * Creates edits of the token as transposes.
+ * get_transpose_edits("joe") = "oje", "jeo"
+ */
+transposes TokenEditor::get_transpose_edits (const Token& _to_edit) {
+    std::string token_str = _to_edit.get_token_str();
+    
+    // The number of transposes is equal to the length of the string minus one.
+    unsigned int token_str_length = token_str.length();
+    transposes ret(token_str_length-1);
+
+    // Each transpose length will be equal to the length of the token.
+    std::string transpose;
+    transpose.reserve(token_str_length);
+
+    // Go through the string, transposing (swapping) characters.
+    for (unsigned int i = 0; i < token_str_length-1; ++i) {
+        transpose = token_str;
+        swap_str_chars(transpose, i, i+1);
+
+        ret[i] = transpose;
     }
 
     return ret;

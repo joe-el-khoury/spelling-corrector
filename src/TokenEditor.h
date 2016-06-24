@@ -10,11 +10,13 @@
 typedef std::pair<Token, Token> split_pair;
 typedef std::vector<split_pair> splits;
 typedef std::vector<Token> deletes;
+typedef std::vector<Token> transposes;
 
 class TokenEditor {
 public:
-    splits  get_split_edits  (const Token&);
-    deletes get_delete_edits (const Token&);
+    splits     get_split_edits     (const Token&);
+    deletes    get_delete_edits    (const Token&);
+    transposes get_transpose_edits (const Token&);
 };
 
 #endif /* TOKENEDITOR_H */
