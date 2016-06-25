@@ -79,7 +79,7 @@ deletes TokenEditor::get_delete_edits (const Token& _to_edit) {
     std::string deletion;
     deletion.reserve(token_str_length-1);
 
-    splits split_edits = this->get_split_edits(_to_edit);
+    splits split_edits = TokenEditor::get_split_edits(_to_edit);
     
     // The index of the vector we will be adding to.
     int i = 0;
@@ -129,6 +129,12 @@ transposes TokenEditor::get_transpose_edits (const Token& _to_edit) {
     return ret;
 }
 
+// Initialize the alphabet.
+const std::vector<char> TokenEditor::alphabet = {
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+};
+
 /**
  * Creates edits of the tokens as replacements.
  * get_replace_edits("joe") = "aoe", ... "zoe", ... "jae", ... "jze", ... "joa", ... "joz".
@@ -149,7 +155,7 @@ replaces TokenEditor::get_replace_edits (const Token& _to_edit) {
     // Go through the string, replacing characters.
     for (unsigned int i = 0; i < token_str_length; ++i) {
         replace = token_str;
-        for (const char alphabet_char : this->alphabet) {
+        for (const char alphabet_char : TokenEditor::alphabet) {
             replace[i] = alphabet_char;
             ret[j] = Token(replace);
             j++;
@@ -179,9 +185,8 @@ inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
     // Go through the string, inserting into it.
     for (unsigned int i = 0; i < token_str_length+1; ++i) {
         insert = token_str;
-        for (const char alphabet_char : this->alphabet) {
-            // The string we are inserting. It consists solely of the
-            // character.
+        for (const char alphabet_char : TokenEditor::alphabet) {
+            // The string we are inserting. It consists solely of the character.
             std::string alphabet_str(1, alphabet_char);
             
             insert.insert(i, alphabet_str);

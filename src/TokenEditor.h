@@ -11,24 +11,24 @@ typedef std::vector<Token> deletes;
 typedef std::vector<Token> transposes;
 typedef std::vector<Token> replaces;
 typedef std::vector<Token> inserts;
+typedef std::vector<Token> edits;
 typedef std::pair<Token, Token> split_pair;
 typedef std::vector<split_pair> splits;
 
 class TokenEditor {
 public:
-    // Edit functions.
-    deletes    get_delete_edits    (const Token&);
-    transposes get_transpose_edits (const Token&);
-    replaces   get_replace_edits   (const Token&);
-    inserts    get_insert_edits    (const Token&);
+    static edits get_edits (const Token&);
+    
+    // The English alphabet.
+    static const std::vector<char> alphabet;
     
 private:
-    splits get_split_edits (const Token&);
-    // The English alphabet.
-    const std::vector<char> alphabet = {
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
-        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-    };
+    // Edit functions.
+    static deletes    get_delete_edits    (const Token&);
+    static transposes get_transpose_edits (const Token&);
+    static replaces   get_replace_edits   (const Token&);
+    static inserts    get_insert_edits    (const Token&);
+    static splits     get_split_edits     (const Token&);
 };
 
 #endif /* TOKENEDITOR_H */
