@@ -11,21 +11,24 @@ void TokenHistogram::add_tokens (const std::vector<Token>& _tokens_to_add) {
 }
 
 /**
+ * Check if a token exists in the histogram.
+ */
+bool TokenHistogram::token_exists (const Token& _to_find) const {
+    TokenHistogram::Histogram::const_iterator got = (this->histogram).find(_to_find);
+    return (got != (this->histogram).end());
+}
+
+/**
  * Add a token to the histogram.
  * All that has to be done is to increment the count of the token.
  */
 void TokenHistogram::add_token (const Token& _to_add) {
-    // First check if the token is already in the histogram.
-    TokenHistogram::Histogram::iterator got = (this->histogram).find(_to_add);
-    bool token_exists = (got != (this->histogram).end());
-
     // The count of the token will be incremented if it exists, otherwise the token
     // will be added to the histogram with the default value.
-    if (token_exists) {
-        // Increment the count.
-        (got->second)++;
+    if (this->token_exists(_to_add)) {
+        (this->histogram)[_to_add]++;
+    
     } else {
-        // Add the token with the default count.
         (this->histogram).insert({_to_add, this->default_value});
     }
 }
@@ -34,18 +37,14 @@ void TokenHistogram::add_token (const Token& _to_add) {
  * Get the count of the particular token. If the token does not exist, then
  * just return the default value.
  */
-int TokenHistogram::get_count (const Token& _to_get) {
-    TokenHistogram::Histogram::iterator got = (this->histogram).find(_to_get);
-    bool token_exists = (got != (this->histogram).end());
-
-    return token_exists ? got->second : this->default_value;
+unsigned long TokenHistogram::get_count (const Token& _to_get) {
+    return this->token_exists(_to_get) ? (this->histogram)[_to_get] : this->default_value;
 }
 
 /**
  * Prints the histogram in a debugging friendly way.
  */
 void TokenHistogram::print (unsigned long _threshold) const {
-    // Used in the loop below.
     std::string token_str;
     unsigned long token_count;
 

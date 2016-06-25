@@ -21,12 +21,14 @@ struct hash<Token> {
 
 class TokenHistogram {
     // The histogram is just an unordered map that maps tokens to
-    // integers.
+    // unsigned long.
     typedef std::unordered_map<Token, unsigned long> Histogram;
 public:
     void add_tokens (const std::vector<Token>&);
     void add_token (const Token&);
-    int  get_count (const Token&);
+    unsigned long get_count (const Token&);
+
+    bool token_exists (const Token&) const;
 
     // For debugging purposes.
     void print (unsigned long=0) const;
