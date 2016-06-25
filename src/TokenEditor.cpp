@@ -178,17 +178,18 @@ inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
     int j = 0;
     // Go through the string, inserting into it.
     for (unsigned int i = 0; i < token_str_length+1; ++i) {
+        insert = token_str;
         for (const char alphabet_char : this->alphabet) {
-            // Reset the string every time.
-            insert = token_str;
-            
-            // The character we are inserting into the string. It's supposed to be
-            // a string.
+            // The string we are inserting. It consists solely of the
+            // character.
             std::string alphabet_str(1, alphabet_char);
             
             insert.insert(i, alphabet_str);
             ret[j] = insert;
             j++;
+
+            // Reset the string by removing the character from the string.
+            insert.erase(insert.begin() + i);
         }
     }
 
