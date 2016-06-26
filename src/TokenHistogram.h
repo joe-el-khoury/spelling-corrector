@@ -12,9 +12,19 @@ namespace std {
  */
 template<>
 struct hash<Token> {
-    size_t operator() (const Token& _other) const {
-        // Basically all I'm doing is hashing the string of the token object.
-        return std::hash<std::string>()(_other.get_token_str());
+    /**
+     * Used the FNV-1a hash function to hash the token.
+     */
+    size_t operator() (const Token& _to_hash) const {
+        unsigned long long hash      = 0xcbf29ce484222325;
+                 long long fnv_prime = 0x100000001b3;
+        const std::string& str = _to_hash.get_token_str();
+        for (const char& c : str) {
+            hash ^= c;
+            hash *= fnv_prime;
+        }
+
+        return (size_t)(hash);
     }
 };
 }
