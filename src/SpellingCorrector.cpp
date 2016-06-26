@@ -48,3 +48,14 @@ void SpellingCorrector::train (const std::string& _file_name) {
     // 3) Add the tokens to the histogram.
     this->token_histogram->add_tokens(this->tokenizer->get_tokens());
 }
+
+bool SpellingCorrector::is_known_word (const Token& _word) {
+    return (this->token_histogram->token_exists(_word));
+}
+
+/**
+ * From the list of words given, remove all the ones that are "unknown".
+ * An unknown word is one we haven't encountered in the training set.
+ */
+std::vector<Token>& SpellingCorrector::remove_unknown_words (std::vector<Token>& _words) {
+}
