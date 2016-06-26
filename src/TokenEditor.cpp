@@ -200,3 +200,32 @@ inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
 
     return ret;
 }
+
+/**
+ * Gets all the edits for the token.
+ */
+edits TokenEditor::get_edits (const Token& _to_edit) {
+    // Get all the edits.
+    deletes    delete_edits    = TokenEditor::get_delete_edits(_to_edit);
+    transposes transpose_edits = TokenEditor::get_transpose_edits(_to_edit);
+    replaces   replace_edits   = TokenEditor::get_replace_edits(_to_edit);
+    inserts    insert_edits    = TokenEditor::get_insert_edits(_to_edit);
+    
+    std::vector<edits> temp_vec = {delete_edits, transpose_edits, replace_edits, insert_edits};
+    // Get the total size of all the vectors to reserve the appropriate space for the to be
+    // returned vector.
+    unsigned int total_size = 0;
+    for (const edits& edit_vec : temp_vec) {
+        total_size += edit_vec.size();
+    }
+
+    // Go through the vectors, adding them to the vector to be returned.
+    edits ret;
+    ret.reserve(total_size);
+    for (const edits& edit_vec : temp_vec) {
+        // Add the vector to the end of the returned vector.
+        ret.insert(ret.end(), edit_vec.begin(), edit_vec.end());
+    }
+
+    return ret;
+}

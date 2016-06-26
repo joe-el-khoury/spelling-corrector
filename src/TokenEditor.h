@@ -21,7 +21,6 @@ public:
     
     // The English alphabet.
     static const std::vector<char> alphabet;
-    
 private:
     // Edit functions.
     static deletes    get_delete_edits    (const Token&);
