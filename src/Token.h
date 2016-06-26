@@ -18,7 +18,7 @@ public:
     void delimit_token ();
     char delimit_token_with = ' ';
 
-    std::string get_token_str () const;
+    const std::string& get_token_str () const;
 private:
     bool is_clean_char (char);
     std::string token_str;

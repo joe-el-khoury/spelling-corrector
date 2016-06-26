@@ -34,7 +34,7 @@ bool Token::is_clean_char (char _char) {
     return (is_upper_letter || is_lower_letter);
 }
 
-std::string Token::get_token_str () const {
+const std::string& Token::get_token_str () const {
     return this->token_str;
 }
 
