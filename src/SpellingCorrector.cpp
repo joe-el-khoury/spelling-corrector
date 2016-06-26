@@ -58,4 +58,13 @@ bool SpellingCorrector::is_known_word (const Token& _word) {
  * An unknown word is one we haven't encountered in the training set.
  */
 std::vector<Token>& SpellingCorrector::remove_unknown_words (std::vector<Token>& _words) {
+    std::vector<Token>::iterator it;
+    for (it = _words.begin(); it != _words.end(); ++it) {
+        bool word_is_known = this->is_known_word(*it);
+        if (!word_is_known) {
+            _words.erase(it);
+        }
+    }
+
+    return _words;
 }

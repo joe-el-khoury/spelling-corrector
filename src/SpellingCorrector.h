@@ -15,6 +15,9 @@ public:
     
     // Trains the spelling corrector on a file.
     void train (const std::string&);
+    
+    std::vector<Token>& remove_unknown_words (std::vector<Token>&);
+    bool is_known_word (const Token&);
 private:
     // The essential parts of the engine.
     std::unique_ptr<FileReader> file_reader;
@@ -24,9 +27,6 @@ private:
     // The names of the files we've already trained on.
     std::vector<std::string> files_trained_on;
     bool already_trained_on (const std::string&) const;
-
-    std::vector<Token>& remove_unknown_words (std::vector<Token>&);
-    bool is_known_word (const Token&);
 };
 
 #endif /* SPELLINGCORRECTOR_H */
