@@ -1,5 +1,4 @@
 #include "TokenHistogram.h"
-#include "Token.h"
 
 /**
  * Add a bunch of tokens to the histogram.

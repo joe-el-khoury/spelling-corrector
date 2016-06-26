@@ -1,9 +1,6 @@
 #include <algorithm>
 
 #include "SpellingCorrector.h"
-#include "FileReader.h"
-#include "Tokenizer.h"
-#include "TokenHistogram.h"
 #include "Token.h"
 
 SpellingCorrector::SpellingCorrector () {

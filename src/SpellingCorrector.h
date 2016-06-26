@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "FileReader.h"
+#include "util/FileReader.h"
 #include "Tokenizer.h"
 #include "TokenHistogram.h"
 
