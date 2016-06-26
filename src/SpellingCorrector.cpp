@@ -1,4 +1,3 @@
-#include <memory>
 #include <algorithm>
 
 #include "SpellingCorrector.h"
