@@ -1,6 +1,5 @@
-#include <algorithm>
-
 #include "Token.h"
+#include "TokenEditor.h"
 
 Token::Token (const std::string& _token_str) {
     this->token_str = _token_str;
@@ -25,10 +24,6 @@ void Token::delimit_token () {
     }
 }
 
-std::string Token::get_token_str () const {
-    return this->token_str;
-}
-
 /**
  * Checks if a character is "clean". A clean character is one that is either
  * an uppercase character (A-Z) or a lowercase character (a-z).
@@ -37,4 +32,15 @@ bool Token::is_clean_char (char _char) {
     bool is_upper_letter = (0x41 <= _char && _char <= 0x5A);
     bool is_lower_letter = (0x61 <= _char && _char <= 0x7A);
     return (is_upper_letter || is_lower_letter);
+}
+
+std::string Token::get_token_str () const {
+    return this->token_str;
+}
+
+/**
+ * Gets all the edits for this token.
+ */
+std::vector<Token> Token::get_edits () const {
+    return TokenEditor::get_edits(*this);
 }
