@@ -14,8 +14,8 @@ public:
     SpellingCorrector ();
     
     // Trains the spelling corrector on a file.
-    void train (const std::string&);
-    
+    void train (const std::string&, int=900);
+
     std::vector<Token>& remove_unknown_words (std::vector<Token>&);
     bool is_known_word (const Token&);
 private:
