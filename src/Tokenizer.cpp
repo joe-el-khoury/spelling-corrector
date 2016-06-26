@@ -1,7 +1,7 @@
 #include "Tokenizer.h"
 #include "Token.h"
 
-Tokenizer::TokenList Tokenizer::get_tokens () {
+Tokenizer::TokenList& Tokenizer::get_tokens () {
     return this->tokens;
 }
 
@@ -65,4 +65,11 @@ Tokenizer::TokenList Tokenizer::split_and_clean_token (Token& _to_clean) {
     }
 
     return ret;
+}
+
+/**
+ * All it does is clear the list of tokens.
+ */
+void Tokenizer::reset_tokens () {
+    (this->tokens).clear();
 }

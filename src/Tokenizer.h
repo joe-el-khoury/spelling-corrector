@@ -11,7 +11,9 @@ class Tokenizer {
     typedef std::vector<Token> TokenList;
 public:
     void tokenize (const std::string&, char);
-    Tokenizer::TokenList get_tokens ();
+    
+    Tokenizer::TokenList& get_tokens ();
+    void reset_tokens ();
 private:
     Tokenizer::TokenList split_and_clean_token (Token&);
     Tokenizer::TokenList tokens;
