@@ -48,7 +48,7 @@ void SpellingCorrector::train (const std::string& _file_name, int _train_every) 
         if (num_tokens >= _train_every) {
             num_tokens = 0;
             
-            // Send the tokens to the histogram and then reset the tokenizer.
+            // 3) Send the tokens to the histogram and then reset the tokenizer.
             this->token_histogram->add_tokens(this->tokenizer->get_tokens());
             this->tokenizer->reset_tokens();
         }
@@ -69,7 +69,7 @@ bool SpellingCorrector::is_known_word (const Token& _word) {
  * From the list of words given, remove all the ones that are "unknown".
  * An unknown word is one we haven't encountered in the training set.
  */
-std::vector<Token>& SpellingCorrector::remove_unknown_words (std::vector<Token>& _words) {
+std::vector<Token>& SpellingCorrector::remove_unknown_words_from (std::vector<Token>& _words) {
     std::vector<Token>::iterator it;
     for (it = _words.begin(); it != _words.end(); ++it) {
         bool word_is_known = this->is_known_word(*it);
