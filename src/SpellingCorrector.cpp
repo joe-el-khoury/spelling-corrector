@@ -53,6 +53,12 @@ void SpellingCorrector::train (const std::string& _file_name, int _train_every) 
             this->tokenizer->reset_tokens();
         }
     }
+
+    if (num_tokens < _train_every) {
+        // Send the last batch to the histogram.
+        this->token_histogram->add_tokens(this->tokenizer->get_tokens());
+        this->tokenizer->reset_tokens();
+    }
 }
 
 bool SpellingCorrector::is_known_word (const Token& _word) {
