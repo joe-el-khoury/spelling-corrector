@@ -41,6 +41,27 @@ split_pair split_at (const Token& _to_split, size_t _pivot) {
     return std::make_pair(first, second);
 }
 
+/**
+ * Merges a bunch of vectors together.
+ */
+template<typename T>
+std::vector<T> merge (const std::initializer_list< std::vector<T> >& vector_list) {
+    // Get the total size of the vectors.
+    unsigned int total_size = 0;
+    for (const std::vector<T>& vec : vector_list) {
+        total_size += vec.size();
+    }
+
+    // Construct the vector.
+    std::vector<T> ret;
+    ret.reserve(total_size);
+    for (const std::vector<T>& vec : vector_list) {
+        ret.insert(ret.end(), vec.begin(), vec.end());
+    }
+
+    return ret;
+}
+
 //////////////////////////////////////////////////////////////////
 ///////////////// EDIT FUNCTIONS /////////////////////////////////
 //////////////////////////////////////////////////////////////////
@@ -204,7 +225,7 @@ inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
 /**
  * Gets all the edits for the token.
  */
-edits TokenEditor::get_edits (const Token& _to_edit) {
+edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance=1) {
     // Get all the edits.
     deletes    delete_edits    = TokenEditor::get_delete_edits(_to_edit);
     transposes transpose_edits = TokenEditor::get_transpose_edits(_to_edit);
