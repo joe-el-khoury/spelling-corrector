@@ -71,6 +71,6 @@ const std::string& Token::get_token_str () const {
 /**
  * Gets all the edits for this token.
  */
-std::vector<Token> Token::get_edits () const {
-    return TokenEditor::get_edits(*this);
+std::vector<Token> Token::get_edits (unsigned int _edit_distance) const {
+    return TokenEditor::get_edits(*this, _edit_distance);
 }

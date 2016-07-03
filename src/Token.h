@@ -17,7 +17,7 @@ public:
     bool operator== (const Token&) const;
     bool operator== (const std::string&) const;
 
-    std::vector<Token> get_edits () const;
+    std::vector<Token> get_edits (unsigned int=1) const;
 
     // Used for cleaning up the token.
     void delimit_token ();
