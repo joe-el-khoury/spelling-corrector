@@ -9,6 +9,11 @@ class Token {
 public:
     Token () { /* empty constructor */ };
     Token (const std::string&);
+    Token (Token&&);
+    Token& operator= (Token&&);
+    Token (const Token&);
+    Token& operator= (const Token&);
+    
     bool operator== (const Token&) const;
     bool operator== (const std::string&) const;
 

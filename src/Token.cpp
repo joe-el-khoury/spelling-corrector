@@ -1,6 +1,36 @@
 #include "Token.h"
 #include "TokenEditor.h"
 
+/**
+ * Move constructor.
+ */
+Token::Token (Token&& _other) {
+    this->token_str = std::move(_other.get_token_str());
+}
+
+/**
+ * Move assignment operator.
+ */
+Token& Token::operator= (Token&& _other) {
+    this->token_str = std::move(_other.get_token_str());
+    return *this;
+}
+
+/**
+ * Copy constructor.
+ */
+Token::Token (const Token& _other) {
+    this->token_str = _other.get_token_str();
+}
+
+/**
+ * Copy assignment operator.
+ */
+Token& Token::operator= (const Token& _other) {
+    this->token_str = _other.get_token_str();
+    return *this;
+}
+
 Token::Token (const std::string& _token_str) {
     this->token_str = _token_str;
 }
