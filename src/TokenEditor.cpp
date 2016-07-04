@@ -262,3 +262,10 @@ edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance
 
     return all_edits;
 }
+
+/**
+ * Computes the Damerau–Levenshtein edit distance between the two tokens.
+ */
+unsigned int TokenEditor::get_edit_distance (const Token& _orig, const Token& _edit) {
+    return 0; // suppress warnings.
+}

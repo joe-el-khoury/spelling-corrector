@@ -18,6 +18,7 @@ typedef std::vector<split_pair> splits;
 class TokenEditor {
 public:
     static edits get_edits (const Token&, unsigned int);
+    static unsigned int get_edit_distance (const Token&, const Token&);
     
     // The English alphabet.
     static const std::vector<char> alphabet;
