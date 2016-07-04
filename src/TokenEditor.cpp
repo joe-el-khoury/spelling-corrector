@@ -1,4 +1,5 @@
 #include "TokenEditor.h"
+#include "util/Helper.h"
 
 //////////////////////////////////////////////////////////////////
 ///////////////// HELPER FUNCTIONS ///////////////////////////////
@@ -39,36 +40,6 @@ split_pair split_at (const Token& _to_split, size_t _pivot) {
     Token second = splice_token_from_to(_to_split, _pivot, _to_split.get_token_str().length());
 
     return std::make_pair(first, second);
-}
-
-/**
- * Merges a bunch of vectors together into the first vector.
- */
-template<typename T>
-T& merge (std::vector<T>&& _vector_list) {
-    // We will merge all the vectors into the first vector.
-    T& merge_into = _vector_list[0];
-
-    // Get the total size of the vectors.
-    unsigned int total_size = 0;
-    for (const T& vec : _vector_list) {
-        total_size += vec.size();
-    }
-    total_size -= merge_into.size();
-
-    merge_into.reserve(total_size);
-    for (T& vec : _vector_list) {
-        if (vec == merge_into) {
-            continue;
-        }
-
-        // Move the tokens into the vector.
-        auto begin_move_iter = std::make_move_iterator(vec.begin());
-        auto end_move_iter   = std::make_move_iterator(vec.end());
-        merge_into.insert(merge_into.end(), begin_move_iter, end_move_iter);
-    }
-
-    return merge_into;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -247,13 +218,13 @@ edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance
             replaces_temp   = TokenEditor::get_replace_edits(edit);
             inserts_temp    = TokenEditor::get_insert_edits(edit);
             
-            delete_edits    = merge<deletes>({delete_edits, deletes_temp});
-            transpose_edits = merge<transposes>({transpose_edits, transposes_temp});
-            replace_edits   = merge<replaces>({replace_edits, replaces_temp});
-            insert_edits    = merge<inserts>({insert_edits, inserts_temp});
+            delete_edits    = helper::merge<deletes>({delete_edits, deletes_temp});
+            transpose_edits = helper::merge<transposes>({transpose_edits, transposes_temp});
+            replace_edits   = helper::merge<replaces>({replace_edits, replaces_temp});
+            insert_edits    = helper::merge<inserts>({insert_edits, inserts_temp});
         }
 
-        all_edits = merge<edits>({
+        all_edits = helper::merge<edits>({
             all_edits,
             delete_edits, transpose_edits,
             replace_edits, insert_edits
