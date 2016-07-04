@@ -42,24 +42,33 @@ split_pair split_at (const Token& _to_split, size_t _pivot) {
 }
 
 /**
- * Merges a bunch of vectors together.
+ * Merges a bunch of vectors together into the first vector.
  */
 template<typename T>
-std::vector<T> merge (const std::initializer_list< std::vector<T> >& vector_list) {
+T& merge (std::vector<T>&& _vector_list) {
+    // We will merge all the vectors into the first vector.
+    T& merge_into = _vector_list[0];
+
     // Get the total size of the vectors.
     unsigned int total_size = 0;
-    for (const std::vector<T>& vec : vector_list) {
+    for (const T& vec : _vector_list) {
         total_size += vec.size();
     }
+    total_size -= merge_into.size();
 
-    // Construct the vector.
-    std::vector<T> ret;
-    ret.reserve(total_size);
-    for (const std::vector<T>& vec : vector_list) {
-        ret.insert(ret.end(), vec.begin(), vec.end());
+    merge_into.reserve(total_size);
+    for (T& vec : _vector_list) {
+        if (vec == merge_into) {
+            continue;
+        }
+
+        // Move the tokens into the vector.
+        auto begin_move_iter = std::make_move_iterator(vec.begin());
+        auto end_move_iter   = std::make_move_iterator(vec.end());
+        merge_into.insert(merge_into.end(), begin_move_iter, end_move_iter);
     }
 
-    return ret;
+    return merge_into;
 }
 
 //////////////////////////////////////////////////////////////////
@@ -222,31 +231,34 @@ inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
     return ret;
 }
 
-/**
- * Gets all the edits for the token.
- */
 edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance=1) {
-    // Get all the edits.
-    deletes    delete_edits    = TokenEditor::get_delete_edits(_to_edit);
-    transposes transpose_edits = TokenEditor::get_transpose_edits(_to_edit);
-    replaces   replace_edits   = TokenEditor::get_replace_edits(_to_edit);
-    inserts    insert_edits    = TokenEditor::get_insert_edits(_to_edit);
+    //         Stores edits.    Throwaway variables.
+    deletes    delete_edits,    deletes_temp;
+    transposes transpose_edits, transposes_temp;
+    replaces   replace_edits,   replaces_temp;
+    inserts    insert_edits,    inserts_temp;
     
-    std::vector<edits> temp_vec = {delete_edits, transpose_edits, replace_edits, insert_edits};
-    // Get the total size of all the vectors to reserve the appropriate space for the to be
-    // returned vector.
-    unsigned int total_size = 0;
-    for (const edits& edit_vec : temp_vec) {
-        total_size += edit_vec.size();
+    // The first edit is the token itself.
+    edits all_edits = {_to_edit};
+    for (unsigned int i = 0; i < _edit_distance; ++i) {
+        for (const Token& edit : all_edits) {
+            deletes_temp    = TokenEditor::get_delete_edits(edit);
+            transposes_temp = TokenEditor::get_transpose_edits(edit);
+            replaces_temp   = TokenEditor::get_replace_edits(edit);
+            inserts_temp    = TokenEditor::get_insert_edits(edit);
+            
+            delete_edits    = merge<deletes>({delete_edits, deletes_temp});
+            transpose_edits = merge<transposes>({transpose_edits, transposes_temp});
+            replace_edits   = merge<replaces>({replace_edits, replaces_temp});
+            insert_edits    = merge<inserts>({insert_edits, inserts_temp});
+        }
+
+        all_edits = merge<edits>({
+            all_edits,
+            delete_edits, transpose_edits,
+            replace_edits, insert_edits
+        });
     }
 
-    // Go through the vectors, adding them to the vector to be returned.
-    edits ret;
-    ret.reserve(total_size);
-    for (const edits& edit_vec : temp_vec) {
-        // Add the vector to the end of the returned vector.
-        ret.insert(ret.end(), edit_vec.begin(), edit_vec.end());
-    }
-
-    return ret;
+    return all_edits;
 }
