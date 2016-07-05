@@ -84,12 +84,17 @@ void SpellingCorrector::remove_unknown_words_from (std::vector<Token>& _words) {
 /**
  * Gets the edits of a word, and discards the ones that are unkown.
  */
-std::vector<Token> SpellingCorrector::get_known_edits_of (const Token& _word, 
-    unsigned int _edit_distance) {
+std::vector<Token> SpellingCorrector::get_known_edits_of (const Token& _word, unsigned int _edit_distance) {
 
     // Get the edits of the word and remove the unknown ones.
     std::vector<Token> word_edits = _word.get_edits(_edit_distance);
     this->remove_unknown_words_from(word_edits);
 
     return word_edits;
+}
+
+/**
+ * Obviously the most important part of the spelling corrector.
+ */
+Token correct_word (const Token& _to_correct) {
 }

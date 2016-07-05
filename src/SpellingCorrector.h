@@ -13,16 +13,16 @@ class SpellingCorrector {
 public:
     SpellingCorrector ();
     
-    // Trains the spelling corrector on a file.
-    void train (const std::string&, int=900);
-
-    std::vector<Token> get_known_edits_of (const Token&, unsigned int=1);
+    // Used for training, and used for correcting.
+    void  train        (const std::string&, int=900);
+    Token correct_word (const Token&);
 private:
     // The essential parts of the engine.
     std::unique_ptr<FileReader> file_reader;
     std::unique_ptr<Tokenizer> tokenizer;
     std::unique_ptr<TokenHistogram> token_histogram;
 
+    std::vector<Token> get_known_edits_of (const Token&, unsigned int=1);
     void remove_unknown_words_from (std::vector<Token>&);
     bool is_known_word (const Token&);
     
