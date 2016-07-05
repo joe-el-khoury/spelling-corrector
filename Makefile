@@ -1,4 +1,4 @@
-OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o
+OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o bin/IteratorInterface.o
 CC = g++
 DEBUG = -g
 EXTRAFLAGS = -std=c++14
@@ -28,6 +28,9 @@ bin/SpellingCorrector.o : src/SpellingCorrector.cpp src/SpellingCorrector.h src/
 
 bin/TokenEditor.o : src/TokenEditor.cpp src/TokenEditor.h src/Token.h
 	$(CC) $(EXTRAFLAGS) $(CFLAGS) src/TokenEditor.cpp -o bin/TokenEditor.o
+
+bin/IteratorInterface.o : src/util/IteratorInterface.cpp src/util/IteratorInterface.h
+	$(CC) $(EXTRAFLAGS) $(CFLAGS) src/util/IteratorInterface.cpp -o bin/IteratorInterface.o
 
 clean:
 	\rm bin/*.o bin/Main
