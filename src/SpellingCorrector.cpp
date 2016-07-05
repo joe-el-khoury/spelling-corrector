@@ -69,14 +69,27 @@ bool SpellingCorrector::is_known_word (const Token& _word) {
  * From the list of words given, remove all the ones that are "unknown".
  * An unknown word is one we haven't encountered in the training set.
  */
-std::vector<Token>& SpellingCorrector::remove_unknown_words_from (std::vector<Token>& _words) {
-    std::vector<Token>::iterator it;
-    for (it = _words.begin(); it != _words.end(); ++it) {
-        bool word_is_known = this->is_known_word(*it);
-        if (!word_is_known) {
-            _words.erase(it);
-        }
-    }
+void SpellingCorrector::remove_unknown_words_from (std::vector<Token>& _words) {
+    // Remove all unknown words.
+    if (!_words.empty()) {
+        std::vector<Token>::iterator last_known;
+        last_known = std::remove_if(_words.begin(), _words.end(), [&](const Token& _token) {
+            return !(this->is_known_word(_token));
+        });
 
-    return _words;
+        _words.erase(last_known, _words.end());
+    }
+}
+
+/**
+ * Gets the edits of a word, and discards the ones that are unkown.
+ */
+std::vector<Token> SpellingCorrector::get_known_edits_of (const Token& _word, 
+    unsigned int _edit_distance) {
+
+    // Get the edits of the word and remove the unknown ones.
+    std::vector<Token> word_edits = _word.get_edits(_edit_distance);
+    this->remove_unknown_words_from(word_edits);
+
+    return word_edits;
 }
