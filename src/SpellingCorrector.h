@@ -22,6 +22,7 @@ private:
     std::unique_ptr<Tokenizer> tokenizer;
     std::unique_ptr<TokenHistogram> token_histogram;
 
+    Token get_best_candidate (const std::vector<Token>&);
     std::vector<Token> get_known_edits_of (const Token&, unsigned int=1);
     void remove_unknown_words_from (std::vector<Token>&);
     bool is_known_word (const Token&) const;

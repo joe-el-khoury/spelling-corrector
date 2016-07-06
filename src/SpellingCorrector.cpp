@@ -93,6 +93,23 @@ std::vector<Token> SpellingCorrector::get_known_edits_of (const Token& _word, un
 }
 
 /**
+ * Gets the best candidate from a list of candidates. The best candidate is one that appears
+ * the most times in the training set.
+ */
+Token SpellingCorrector::get_best_candidate (const std::vector<Token>& _candidates) {
+    std::vector<Token>::const_iterator best_candidate_iter;
+    best_candidate_iter = std::max_element(_candidates.cbegin(), _candidates.cend(),
+    // Lambda function to find the better candidate.
+    [&](const Token& _t1, const Token& _t2) {
+        unsigned long count1 = this->token_histogram->get_count(_t1);
+        unsigned long count2 = this->token_histogram->get_count(_t2);
+        return count1 < count2;
+    });
+
+    return *best_candidate_iter;
+}
+
+/**
  * Obviously the most important part of the spelling corrector.
  */
 Token SpellingCorrector::correct_word (const Token& _to_correct) {
@@ -107,31 +124,13 @@ Token SpellingCorrector::correct_word (const Token& _to_correct) {
     // 2) Get the known edits at a distance of 1, and check for the best candidate.
     std::vector<Token> known_edits_dist1 = this->get_known_edits_of(_to_correct);
     if (!(known_edits_dist1.empty())) {
-        // Get the best candidate.
-        corrected_word_iter = std::max_element(known_edits_dist1.cbegin(), known_edits_dist1.cend(), 
-
-        [&](const Token& _t1, const Token& _t2) {
-            unsigned long count1 = this->token_histogram->get_count(_t1);
-            unsigned long count2 = this->token_histogram->get_count(_t2);
-            return count1 < count2;
-        });
-
-        return *corrected_word_iter;
+        return this->get_best_candidate(known_edits_dist1);
     }
 
     // 3) Get the known edits at a distance of 2, and check for the best candidate.
     std::vector<Token> known_edits_dist2 = this->get_known_edits_of(_to_correct, 2);
     if (!(known_edits_dist2.empty())) {
-        // Get the best candidate.
-        corrected_word_iter = std::max_element(known_edits_dist2.cbegin(), known_edits_dist2.cend(),
-
-        [&](const Token& _t1, const Token& _t2) {
-            unsigned long count1 = this->token_histogram->get_count(_t1);
-            unsigned long count2 = this->token_histogram->get_count(_t2);
-            return count1 < count2;
-        });
-
-        return *corrected_word_iter;
+        return this->get_best_candidate(known_edits_dist2);
     }
 
     // 4) If none of the above are satisfied, then just return the word, as we have
