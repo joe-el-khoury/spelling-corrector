@@ -1,5 +1,5 @@
 OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o bin/IteratorInterface.o
-CC = g++
+CC = g++ -O3
 DEBUG = -g
 EXTRAFLAGS = -std=c++14
 CFLAGS = -Wall -c $(DEBUG)
