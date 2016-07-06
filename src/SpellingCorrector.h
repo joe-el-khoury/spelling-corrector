@@ -24,7 +24,7 @@ private:
 
     std::vector<Token> get_known_edits_of (const Token&, unsigned int=1);
     void remove_unknown_words_from (std::vector<Token>&);
-    bool is_known_word (const Token&);
+    bool is_known_word (const Token&) const;
     
     // The names of the files we've already trained on.
     std::vector<std::string> files_trained_on;

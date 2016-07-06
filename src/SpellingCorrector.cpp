@@ -61,7 +61,7 @@ void SpellingCorrector::train (const std::string& _file_name, int _train_every) 
     }
 }
 
-bool SpellingCorrector::is_known_word (const Token& _word) {
+bool SpellingCorrector::is_known_word (const Token& _word) const {
     return (this->token_histogram->token_exists(_word));
 }
 
@@ -85,7 +85,6 @@ void SpellingCorrector::remove_unknown_words_from (std::vector<Token>& _words) {
  * Gets the edits of a word, and discards the ones that are unkown.
  */
 std::vector<Token> SpellingCorrector::get_known_edits_of (const Token& _word, unsigned int _edit_distance) {
-
     // Get the edits of the word and remove the unknown ones.
     std::vector<Token> word_edits = _word.get_edits(_edit_distance);
     this->remove_unknown_words_from(word_edits);
@@ -96,5 +95,47 @@ std::vector<Token> SpellingCorrector::get_known_edits_of (const Token& _word, un
 /**
  * Obviously the most important part of the spelling corrector.
  */
-Token correct_word (const Token& _to_correct) {
+Token SpellingCorrector::correct_word (const Token& _to_correct) {
+    // 1) Check if the word is correct already.
+    if (this->is_known_word(_to_correct)) {
+        // The word is already correct, so leave the function.
+        return _to_correct;
+    }
+
+    std::vector<Token>::const_iterator corrected_word_iter;
+    
+    // 2) Get the known edits at a distance of 1, and check for the best candidate.
+    std::vector<Token> known_edits_dist1 = this->get_known_edits_of(_to_correct);
+    if (!(known_edits_dist1.empty())) {
+        // Get the best candidate.
+        corrected_word_iter = std::max_element(known_edits_dist1.cbegin(), known_edits_dist1.cend(), 
+
+        [&](const Token& _t1, const Token& _t2) {
+            unsigned long count1 = this->token_histogram->get_count(_t1);
+            unsigned long count2 = this->token_histogram->get_count(_t2);
+            return count1 < count2;
+        });
+
+        return *corrected_word_iter;
+    }
+
+    // 3) Get the known edits at a distance of 2, and check for the best candidate.
+    std::vector<Token> known_edits_dist2 = this->get_known_edits_of(_to_correct, 2);
+    if (!(known_edits_dist2.empty())) {
+        // Get the best candidate.
+        corrected_word_iter = std::max_element(known_edits_dist2.cbegin(), known_edits_dist2.cend(),
+
+        [&](const Token& _t1, const Token& _t2) {
+            unsigned long count1 = this->token_histogram->get_count(_t1);
+            unsigned long count2 = this->token_histogram->get_count(_t2);
+            return count1 < count2;
+        });
+
+        return *corrected_word_iter;
+    }
+
+    // 4) If none of the above are satisfied, then just return the word, as we have
+    // no idea what the word is. Because of that, add it to the token histogram.
+    this->token_histogram->add_token(_to_correct);
+    return _to_correct;
 }
