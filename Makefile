@@ -14,7 +14,7 @@ bin/Main.o : src/Main.cpp src/Token.h src/Tokenizer.h src/TokenHistogram.h src/u
 bin/FileReader.o : src/util/FileReader.cpp src/util/FileReader.h
 	$(CC) $(EXTRAFLAGS) $(CFLAGS) src/util/FileReader.cpp -o bin/FileReader.o
 
-bin/Token.o : src/Token.cpp src/Token.h
+bin/Token.o : src/Token.cpp src/Token.h src/TokenEditor.h
 	$(CC) $(EXTRAFLAGS) $(CFLAGS) src/Token.cpp -o bin/Token.o
 
 bin/TokenHistogram.o : src/TokenHistogram.cpp src/TokenHistogram.h src/Token.h
