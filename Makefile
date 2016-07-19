@@ -1,6 +1,6 @@
 OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o bin/IteratorInterface.o \
-	bin/MySQLInterface.o
+	bin/MySQLInterface.o bin/DatabaseConfigReader.o
 CC = g++
 DEBUG = -g
 CFLAGS = -Wall -O3 -std=c++14 -c -I/usr/include/cppconn $(DEBUG)
@@ -35,6 +35,9 @@ bin/IteratorInterface.o : src/util/IteratorInterface.*
 
 bin/MySQLInterface.o : src/util/MySQLInterface.*
 	$(CC) $(CFLAGS) src/util/MySQLInterface.cpp -o bin/MySQLInterface.o
+
+bin/DatabaseConfigReader.o : config/DatabaseConfigReader.*
+	$(CC) $(CFLAGS) config/DatabaseConfigReader.cpp -o bin/DatabaseConfigReader.o
 
 clean:
 	rm -rf bin/*
