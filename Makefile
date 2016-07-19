@@ -9,7 +9,7 @@ LFLAGS = -Wall -lmysqlcppconn $(DEBUG)
 bin/Main : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o bin/Main
 
-bin/Main.o : src/Main.cpp src/Token.h src/Tokenizer.h src/TokenHistogram.h src/util/FileReader.h src/SpellingCorrector.h
+bin/Main.o : src/Main.cpp src/SpellingCorrector.h
 	$(CC) $(CFLAGS) src/Main.cpp -o bin/Main.o
 
 bin/FileReader.o : src/util/FileReader.*
