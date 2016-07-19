@@ -9,7 +9,7 @@
 class DatabaseConfigReader {
 public:
     DatabaseConfigReader (const std::string&);
-    std::unordered_map<std::string, std::string> get_config_info ();
+    std::unordered_map<std::string, std::string> get_config_data ();
 private:
     boost::property_tree::ptree json_tree;
 };
