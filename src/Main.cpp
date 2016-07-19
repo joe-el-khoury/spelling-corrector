@@ -3,7 +3,8 @@
 
 #include "SpellingCorrector.h"
 
-int main (int argc, const char* argv[]) {std::chrono::time_point<std::chrono::system_clock> start, end;
+int main (int argc, const char* argv[]) {
+    std::chrono::time_point<std::chrono::system_clock> start, end;
     std::chrono::duration<double> elapsed_seconds;
 
     SpellingCorrector sp;
@@ -37,6 +38,5 @@ int main (int argc, const char* argv[]) {std::chrono::time_point<std::chrono::sy
         std::cout << "(" << elapsed_seconds.count() << " second(s)).\n" << std::endl;
         std::cout << "correct>> ";
     }
-    
     return 0;
 }
