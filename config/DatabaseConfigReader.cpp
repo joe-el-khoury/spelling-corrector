@@ -13,7 +13,7 @@ DatabaseConfigReader::DatabaseConfigReader (const std::string& _config_file_name
 /**
  * Read all the config data into a hash table.
  */
-std::unordered_map<std::string, std::string> DatabaseConfigReader::get_config_data () {
+config DatabaseConfigReader::get_config_data () {
     config config_data;
 
     // Go through the JSON, reading values into the hash table.
@@ -26,4 +26,16 @@ std::unordered_map<std::string, std::string> DatabaseConfigReader::get_config_da
     }
 
     return config_data;
+}
+
+/**
+ * Given a config, create the structure that the MySQL interface understands.
+ */
+mysql_interface::db_info DatabaseConfigReader::config_to_db_info (config& _config_data) {
+    return mysql_interface::db_info(
+        _config_data["db_url_prefix"],
+        _config_data["db_name"],
+        _config_data["db_uname"],
+        _config_data["db_password"]
+    );
 }
