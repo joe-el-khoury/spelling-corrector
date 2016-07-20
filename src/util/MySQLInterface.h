@@ -20,11 +20,13 @@ struct db_info {
 class MySQLInterface {
 public:
     MySQLInterface (const db_info&);
+    ~MySQLInterface ();
 private:
     std::string construct_db_url (const db_info&);
 
     // The connection to the database.
     sql::Connection* db_connection;
+    // The last result (if any) obtained from the last statement.
     sql::ResultSet* last_result;
 };
 
