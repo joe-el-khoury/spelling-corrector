@@ -6,10 +6,12 @@
 #include <string>
 #include <unordered_map>
 
+typedef std::unordered_map<std::string, std::string> config;
+
 class DatabaseConfigReader {
 public:
     DatabaseConfigReader (const std::string&);
-    std::unordered_map<std::string, std::string> get_config_data ();
+    config get_config_data ();
 private:
     boost::property_tree::ptree json_tree;
 };

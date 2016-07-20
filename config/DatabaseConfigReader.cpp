@@ -14,7 +14,7 @@ DatabaseConfigReader::DatabaseConfigReader (const std::string& _config_file_name
  * Read all the config data into a hash table.
  */
 std::unordered_map<std::string, std::string> DatabaseConfigReader::get_config_data () {
-    std::unordered_map<std::string, std::string> config_data;
+    config config_data;
 
     // Go through the JSON, reading values into the hash table.
     for (const boost::property_tree::ptree::value_type& row : (this->json_tree).get_child("config")) {
