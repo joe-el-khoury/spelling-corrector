@@ -1,6 +1,6 @@
 OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o bin/IteratorInterface.o \
-	bin/MySQLInterface.o bin/DatabaseConfigReader.o
+	bin/MySQLInterface.o bin/DatabaseConfigReader.o bin/SpellingCorrectorTrainer.o
 CC = g++
 DEBUG = -g
 CFLAGS = -c -Wall -O3 -std=c++14 -I/usr/include/cppconn $(DEBUG)
@@ -26,6 +26,9 @@ bin/Tokenizer.o : src/Tokenizer.* src/Token.h src/util/FileReader.h
 
 bin/SpellingCorrector.o : src/SpellingCorrector.* src/Tokenizer.h src/TokenHistogram.h src/util/FileReader.h
 	$(CC) $(CFLAGS) src/SpellingCorrector.cpp -o bin/SpellingCorrector.o
+
+bin/SpellingCorrectorTrainer.o : src/SpellingCorrectorTrainer.* src/util/FileReader.h src/Tokenizer.h src/util/MySQLInterface.h
+	$(CC) $(CFLAGS) src/SpellingCorrectorTrainer.cpp -o bin/SpellingCorrectorTrainer.o
 
 bin/TokenEditor.o : src/TokenEditor.* src/Token.h
 	$(CC) $(CFLAGS) src/TokenEditor.cpp -o bin/TokenEditor.o
