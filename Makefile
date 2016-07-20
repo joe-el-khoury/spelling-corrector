@@ -3,11 +3,11 @@ OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/MySQLInterface.o bin/DatabaseConfigReader.o
 CC = g++
 DEBUG = -g
-CFLAGS = -Wall -O3 -std=c++14 -c -I/usr/include/cppconn $(DEBUG)
-LFLAGS = -Wall -lmysqlcppconn $(DEBUG)
+CFLAGS = -c -Wall -O3 -std=c++14 -I/usr/include/cppconn $(DEBUG)
+LFLAGS = -lmysqlcppconn $(DEBUG)
 
 bin/Main : $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) -o bin/Main
+	$(CC) -o bin/Main $(OBJS) $(LFLAGS)
 
 bin/Main.o : src/Main.cpp src/SpellingCorrector.h
 	$(CC) $(CFLAGS) src/Main.cpp -o bin/Main.o
