@@ -6,7 +6,7 @@ MySQLInterface::MySQLInterface (const db_info& _db_info) {
     std::string db_password = _db_info.db_password;
 }
 
-std::string MySQLInterface::construct_url (const db_info& _db_info) {
+std::string MySQLInterface::construct_db_url (const db_info& _db_info) {
     std::string db_name       = _db_info.db_name;
     std::string db_url_prefix = _db_info.db_url_prefix;
     
