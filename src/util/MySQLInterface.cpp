@@ -36,3 +36,21 @@ std::string MySQLInterface::construct_db_url (const db_info& _db_info) {
     
     return db_url_prefix + db_name;
 }
+
+/**
+ * Execute a statament on the database.
+ */
+void MySQLInterface::exec_statement (const std::string& _sql_query) {
+    // Create the SQL statement and execute it.
+    sql::Statement* stmt = this->db_connection->createStatement();
+    bool returned_result = stmt->execute(_sql_query);
+
+    // Executing the statement returns a boolean value.
+    // If true is returned, then the statement was a "getter".
+    if (returned_result) {
+        // I hate camel case!
+        this->last_result = stmt->getResultSet();
+    }
+
+    delete stmt;
+}

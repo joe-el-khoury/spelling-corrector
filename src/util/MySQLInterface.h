@@ -21,6 +21,9 @@ class MySQLInterface {
 public:
     MySQLInterface (const db_info&);
     ~MySQLInterface ();
+
+    void exec_statement (const std::string&);
+    sql::ResultSet* get_last_result ();
 private:
     std::string construct_db_url (const db_info&);
 
