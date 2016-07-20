@@ -3,7 +3,7 @@
 /**
  * Create the connection to the database.
  */
-MySQLInterface::MySQLInterface (const mysql::db_info& _db_info) {
+MySQLInterface::MySQLInterface (const mysql_interface::db_info& _db_info) {
     this->last_result = nullptr;
 
     // Get the username, password, and URL of the database.
@@ -30,7 +30,7 @@ MySQLInterface::~MySQLInterface () {
 /**
  * Construct the URL used to connect to the database.
  */
-std::string MySQLInterface::construct_db_url (const mysql::db_info& _db_info) {
+std::string MySQLInterface::construct_db_url (const mysql_interface::db_info& _db_info) {
     std::string db_name       = _db_info.db_name;
     std::string db_url_prefix = _db_info.db_url_prefix;
     
