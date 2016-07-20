@@ -58,6 +58,6 @@ void MySQLInterface::exec_statement (const std::string& _sql_query) {
 /**
  * Get the result from the last executed statement, if any exists.
  */
-sql::ResultSet* get_last_result () {
+sql::ResultSet* MySQLInterface::get_last_result () {
     return this->last_result;
 }
