@@ -1,6 +1,6 @@
 OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o bin/IteratorInterface.o \
-	bin/MySQLInterface.o bin/DatabaseConfigReader.o bin/MD5FileHasher.o
+	bin/MySQLInterface.o bin/DatabaseConfigReader.o
 CC = g++
 DEBUG = -g
 CFLAGS = -c -Wall -O3 -std=c++14 -I/usr/include/cppconn $(DEBUG)
@@ -9,7 +9,7 @@ LFLAGS = -lmysqlcppconn -lcrypto -lboost_iostreams $(DEBUG)
 bin/Main : $(OBJS)
 	$(CC) -o bin/Main $(OBJS) $(LFLAGS)
 
-bin/Main.o : src/Main.cpp src/SpellingCorrector.h
+bin/Main.o : src/Main.cpp src/SpellingCorrector.h src/util/MD5FileHasher.h
 	$(CC) $(CFLAGS) src/Main.cpp -o bin/Main.o
 
 bin/FileReader.o : src/util/FileReader.*
@@ -38,9 +38,6 @@ bin/MySQLInterface.o : src/util/MySQLInterface.*
 
 bin/DatabaseConfigReader.o : config/DatabaseConfigReader.*
 	$(CC) $(CFLAGS) config/DatabaseConfigReader.cpp -o bin/DatabaseConfigReader.o
-
-bin/MD5FileHasher.o : src/util/MD5FileHasher.*
-	$(CC) $(CFLAGS) src/util/MD5FileHasher.cpp -o bin/MD5FileHasher.o
 
 clean:
 	rm -rf bin/*
