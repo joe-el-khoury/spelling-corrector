@@ -36,3 +36,14 @@ bool SpellingCorrectorTrainer::already_trained_on (const std::string& _file_name
 
     return (this->mysql_interface->get_last_result()->next());
 }
+
+/**
+ * Added the MD5 hash of a file to the database backend.
+ */
+void SpellingCorrectorTrainer::add_to_already_trained_on (const std::string& _file_name) {
+    std::string md5_hash = md5hasher::get_hash(_file_name);
+
+    // Add the MD5 hash to the database.
+    const std::string sql_query = "INSERT IGNORE INTO files(md5_hash) VALUES(\""+md5_hash+"\");";
+    this->mysql_interface->exec_statement(sql_query);
+}
