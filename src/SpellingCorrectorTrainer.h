@@ -10,6 +10,9 @@
 class SpellingCorrectorTrainer {
 public:
     SpellingCorrectorTrainer ();
+    
+    void train (const std::string&);
+    bool already_trained_on (const std::string&);
 private:
     // Used for training.
     std::unique_ptr<FileReader> file_reader;
