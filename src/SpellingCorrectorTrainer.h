@@ -3,12 +3,18 @@
 
 #include <memory>
 
+#include "util/FileReader.h"
+#include "util/MySQLInterface.h"
+#include "Tokenizer.h"
+
 class SpellingCorrectorTrainer {
+public:
+    SpellingCorrectorTrainer ();
 private:
     // Used for training.
     std::unique_ptr<FileReader> file_reader;
-    std::unique_ptr<Tokenizer> tokenizer;
-    std::unique_ptr<TokenHistogram> token_histogram;
+    Tokenizer tokenizer;
+    std::unique_ptr<MySQLInterface> mysql_interface;
 };
 
 #endif
