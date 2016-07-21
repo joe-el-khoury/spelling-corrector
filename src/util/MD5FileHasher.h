@@ -6,7 +6,7 @@
 #include <openssl/md5.h>
 #include <boost/iostreams/device/mapped_file.hpp>
 
-namespace MD5FileHasher {
+namespace md5hasher {
 
 /**
  * Get MD5 hash of a file.
@@ -23,6 +23,6 @@ std::vector<unsigned char> get_hash (const std::string& _file_name) {
     return ret;
 }
 
-} /* MD5FileHasher */
+} /* namespace md5hasher */
 
 #endif /* MD5FILEHASHER_H */
