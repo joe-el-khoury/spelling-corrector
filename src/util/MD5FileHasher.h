@@ -1,6 +1,8 @@
 #ifndef MD5FILEHASHER_H
 #define MD5FILEHASHER_H
 
+#include <sstream>
+#include <iomanip>
 #include <vector>
 #include <string>
 #include <openssl/md5.h>
@@ -19,8 +21,12 @@ std::string get_hash (const std::string& _file_name) {
     MD5((unsigned char*)(src.data()), src.size(), hash);
 
     // Convert the array to a string and return it.
-    std::string ret(std::cbegin(hash), std::cend(hash));
-    return ret;
+    std::ostringstream oss;
+    oss << std::hex << std::setfill('0');
+    for (const unsigned char& c : hash) {
+        oss << std::setw(2) << (int)(c);
+    }
+    return oss.str();
 }
 
 } /* namespace md5hasher */
