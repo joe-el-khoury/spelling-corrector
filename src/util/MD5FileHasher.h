@@ -11,15 +11,15 @@ namespace md5hasher {
 /**
  * Get MD5 hash of a file.
  */
-std::vector<unsigned char> get_hash (const std::string& _file_name) {
+std::string get_hash (const std::string& _file_name) {
     unsigned char hash[MD5_DIGEST_LENGTH];
 
     // Hash the file contents.
     boost::iostreams::mapped_file_source src(_file_name);
     MD5((unsigned char*)(src.data()), src.size(), hash);
 
-    // Convert the array to a vector and return it.
-    std::vector<unsigned char> ret(std::begin(hash), std::end(hash));
+    // Convert the array to a string and return it.
+    std::string ret(std::cbegin(hash), std::cend(hash));
     return ret;
 }
 
