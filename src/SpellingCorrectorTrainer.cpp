@@ -24,6 +24,16 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
 }
 
 /**
+ * Inserts the token string into the database backend.
+ */
+void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert) {
+    const std::string& token_str = _to_insert.get_token_str();
+    const std::string sql_query  = "INSERT INTO unigrams (word) VALUES (\""+token_str+"\") ";
+                      sql_query  = "ON DUPLICATE KEY UPDATE count=count+1;";
+    this->mysql_interface->exec_statement(sql_query);
+}
+
+/**
  * Checks the database backend to see if we've already trained on a specific file.
  * This is done by getting the MD5 hash of the file and seeing if it exists in the database.
  */
