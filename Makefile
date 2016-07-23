@@ -6,8 +6,17 @@ DEBUG = -g
 CFLAGS = -c -Wall -O3 -std=c++14 -I/usr/include/cppconn $(DEBUG)
 LFLAGS = -lmysqlcppconn -lcrypto -lboost_iostreams $(DEBUG)
 
-bin/Main : $(OBJS)
-	$(CC) -o bin/Main $(OBJS) $(LFLAGS)
+.PHONY: directories
+
+all: directories bin/SpellingCorrector
+
+directories: bin
+
+bin:
+	mkdir bin
+
+bin/SpellingCorrector : $(OBJS)
+	$(CC) -o bin/SpellingCorrector $(OBJS) $(LFLAGS)
 
 bin/Main.o : src/Main.cpp src/SpellingCorrector.h src/SpellingCorrectorTrainer.h
 	$(CC) $(CFLAGS) src/Main.cpp -o bin/Main.o
