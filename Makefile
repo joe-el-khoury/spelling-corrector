@@ -9,7 +9,7 @@ LFLAGS = -lmysqlcppconn -lcrypto -lboost_iostreams $(DEBUG)
 bin/Main : $(OBJS)
 	$(CC) -o bin/Main $(OBJS) $(LFLAGS)
 
-bin/Main.o : src/Main.cpp src/SpellingCorrector.h src/util/MD5FileHasher.h
+bin/Main.o : src/Main.cpp src/SpellingCorrector.h src/SpellingCorrectorTrainer.h
 	$(CC) $(CFLAGS) src/Main.cpp -o bin/Main.o
 
 bin/FileReader.o : src/util/FileReader.*
@@ -27,7 +27,7 @@ bin/Tokenizer.o : src/Tokenizer.* src/Token.h src/util/FileReader.h
 bin/SpellingCorrector.o : src/SpellingCorrector.* src/Tokenizer.h src/TokenHistogram.h src/util/FileReader.h
 	$(CC) $(CFLAGS) src/SpellingCorrector.cpp -o bin/SpellingCorrector.o
 
-bin/SpellingCorrectorTrainer.o : src/SpellingCorrectorTrainer.* src/util/FileReader.h src/Tokenizer.h src/util/MySQLInterface.h
+bin/SpellingCorrectorTrainer.o : src/SpellingCorrectorTrainer.* src/util/FileReader.h src/Tokenizer.h src/util/MySQLInterface.h src/Token.h
 	$(CC) $(CFLAGS) src/SpellingCorrectorTrainer.cpp -o bin/SpellingCorrectorTrainer.o
 
 bin/TokenEditor.o : src/TokenEditor.* src/Token.h
@@ -39,7 +39,7 @@ bin/IteratorInterface.o : src/util/IteratorInterface.*
 bin/MySQLInterface.o : src/util/MySQLInterface.*
 	$(CC) $(CFLAGS) src/util/MySQLInterface.cpp -o bin/MySQLInterface.o
 
-bin/DatabaseConfigReader.o : config/DatabaseConfigReader.*
+bin/DatabaseConfigReader.o : config/DatabaseConfigReader.* src/util/MySQLInterface.h
 	$(CC) $(CFLAGS) config/DatabaseConfigReader.cpp -o bin/DatabaseConfigReader.o
 
 clean:
