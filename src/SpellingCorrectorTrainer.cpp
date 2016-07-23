@@ -28,8 +28,8 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
  */
 void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert) {
     const std::string& token_str = _to_insert.get_token_str();
-    const std::string sql_query  = "INSERT INTO unigrams (word) VALUES (\""+token_str+"\") ";
-                      sql_query  = "ON DUPLICATE KEY UPDATE count=count+1;";
+    std::string sql_query  = "INSERT INTO unigrams (word) VALUES (\""+token_str+"\") ";
+                sql_query += "ON DUPLICATE KEY UPDATE count=count+1;";
     this->mysql_interface->exec_statement(sql_query);
 }
 
