@@ -21,6 +21,26 @@ SpellingCorrectorTrainer::SpellingCorrectorTrainer () {
  * Train on a file.
  */
 void SpellingCorrectorTrainer::train (const std::string& _file_name) {
+    if (this->already_trained_on(_file_name)) {
+        return;
+    }
+
+    this->add_to_already_trained_on(_file_name);
+
+    // Create the file reader.
+    this->file_reader = std::make_unique<FileReader>(_file_name);
+
+    std::string read_line;
+    while (!(this->file_reader->done_reading)) {
+        // Read a whole line from the file.
+        read_line = this->file_reader->read_up_to('\n');
+
+        // Tokenize the line and insert the tokens to the database.
+        this->tokenizer.tokenize(read_line, ' ');
+        for (const Token& to_insert : this->tokenizer.get_tokens()) {
+            this->insert_token_into_db(to_insert);
+        }
+    }
 }
 
 /**
