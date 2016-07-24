@@ -59,6 +59,9 @@ void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert) {
  */
 bool SpellingCorrectorTrainer::already_trained_on (const std::string& _file_name) {
     std::string md5_hash = md5hasher::get_hash(_file_name);
+    if (md5_hash.empty()) {
+        return true;
+    }
 
     // Get the rows with the MD5 hash of the file.
     const std::string sql_query = "SELECT * FROM files WHERE md5_hash=\""+md5_hash+"\";";
