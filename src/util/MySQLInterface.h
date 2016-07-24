@@ -27,8 +27,6 @@ public:
     void exec_statement (const std::string&);
     sql::ResultSet* get_last_result ();
 private:
-    std::string construct_db_url (const mysql_interface::db_info&);
-
     // The connection to the database.
     sql::Connection* db_connection;
     // The last result (if any) obtained from the last statement.
