@@ -36,7 +36,7 @@ bin/Tokenizer.o : src/Tokenizer.* src/Token.h src/util/FileReader.h
 bin/SpellingCorrector.o : src/SpellingCorrector.* src/Tokenizer.h src/TokenHistogram.h src/util/FileReader.h
 	$(CC) $(CFLAGS) src/SpellingCorrector.cpp -o bin/SpellingCorrector.o
 
-bin/SpellingCorrectorTrainer.o : src/SpellingCorrectorTrainer.* src/util/FileReader.h src/Tokenizer.h src/util/MySQLInterface.h src/Token.h
+bin/SpellingCorrectorTrainer.o : src/SpellingCorrectorTrainer.* src/util/FileReader.h src/Tokenizer.h src/util/MySQLInterface.h src/Token.h src/util/MD5FileHasher.h
 	$(CC) $(CFLAGS) src/SpellingCorrectorTrainer.cpp -o bin/SpellingCorrectorTrainer.o
 
 bin/TokenEditor.o : src/TokenEditor.* src/Token.h
