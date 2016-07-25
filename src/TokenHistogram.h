@@ -34,6 +34,11 @@ class TokenHistogram {
     // unsigned long.
     typedef std::unordered_map<Token, unsigned long> Histogram;
 public:
+    // Clear the histogram.
+    void reset ();
+
+    const Histogram& get_histogram ();
+    
     void add_tokens (const std::vector<Token>&);
     void add_token (const Token&);
     unsigned long get_count (const Token&);

@@ -1,5 +1,13 @@
 #include "TokenHistogram.h"
 
+void TokenHistogram::reset () {
+    this->histogram = TokenHistogram::Histogram();
+}
+
+const TokenHistogram::Histogram& get_histogram () {
+    return this->histogram;
+}
+
 /**
  * Add a bunch of tokens to the histogram.
  */
