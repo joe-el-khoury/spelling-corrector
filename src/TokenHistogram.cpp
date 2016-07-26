@@ -4,7 +4,7 @@ void TokenHistogram::reset () {
     this->histogram = TokenHistogram::Histogram();
 }
 
-const TokenHistogram::Histogram& get_histogram () {
+const TokenHistogram::Histogram& TokenHistogram::get_histogram () {
     return this->histogram;
 }
 
