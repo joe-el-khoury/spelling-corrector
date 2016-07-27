@@ -5,10 +5,6 @@
 #include <vector>
 #include <memory>
 
-#include "util/FileReader.h"
-#include "Tokenizer.h"
-#include "TokenHistogram.h"
-
 class SpellingCorrector {
 public:
     Token correct_word (const Token&);
