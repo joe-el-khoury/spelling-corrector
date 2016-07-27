@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 
+#include "Token.h"
+
 class SpellingCorrector {
 public:
     Token correct_word (const Token&);
