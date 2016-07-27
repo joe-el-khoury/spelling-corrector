@@ -11,7 +11,7 @@
 
 class SpellingCorrector {
 public:
-    void correct_word (const Token&);
+    Token correct_word (const Token&);
 private:
     Token get_best_candidate (const std::vector<Token>&);
     std::vector<Token> get_known_edits_of (const Token&, unsigned int=1);
