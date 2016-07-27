@@ -3,6 +3,7 @@
 #include "SpellingCorrectorTrainer.h"
 #include "../config/DatabaseConfigReader.h"
 #include "util/MD5FileHasher.h"
+#include "TokenHistogram.h"
 
 /**
  * Initialize some member variables and stuff.
@@ -30,15 +31,43 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
     // Create the file reader.
     this->file_reader = std::make_unique<FileReader>(_file_name);
 
+    // How often to commit from memory to the database.
+    // Experiment with this number.
+    unsigned int commit_every = 1000;
+
+    // Number of tokens we have in memory so far.
+    unsigned int tokens_in_mem = 0;
     std::string read_line;
     while (!(this->file_reader->done_reading)) {
         // Read a whole line from the file.
         read_line = this->file_reader->read_up_to('\n');
 
-        // Tokenize the line and insert the tokens to the database.
+        // Tokenize the line and keep the tokens in memory in the token histogram.
         this->tokenizer.tokenize(read_line, ' ');
-        for (const Token& to_insert : this->tokenizer.get_tokens()) {
-            this->insert_token_into_db(to_insert);
+        this->token_histogram.add_tokens(this->tokenizer.get_tokens());
+        tokens_in_mem += this->tokenizer.get_tokens().size();
+        this->tokenizer.reset_tokens();
+
+        if (tokens_in_mem >= commit_every) {
+            std::unordered_map<Token, unsigned long> histogram = this->token_histogram.get_histogram();
+            for (const auto& row : histogram) {
+                Token to_insert = row.first;
+                unsigned long count = row.second;
+                this->insert_token_into_db(to_insert, count);
+            }
+
+            // Reset everything.
+            this->token_histogram.reset();
+            tokens_in_mem = 0;
+        }
+    }
+
+    if (tokens_in_mem < commit_every) {
+        std::unordered_map<Token, unsigned long> histogram = this->token_histogram.get_histogram();
+        for (const auto& row : histogram) {
+            Token to_insert = row.first;
+            unsigned long count = row.second;
+            this->insert_token_into_db(to_insert, count);
         }
     }
 }
@@ -50,6 +79,18 @@ void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert) {
     const std::string& token_str = _to_insert.get_token_str();
     std::string sql_query  = "INSERT INTO unigrams (word) VALUES (\""+token_str+"\") ";
                 sql_query += "ON DUPLICATE KEY UPDATE count=count+1;";
+    this->mysql_interface->exec_statement(sql_query);
+}
+
+/**
+ * Inserts a token with its known count into the database backend;
+ */
+void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert, unsigned long _count) {
+    const std::string& token_str = _to_insert.get_token_str();
+    const std::string& count_str = std::to_string(_count);
+    // Query to update the token count if it exists in the database, and add it with its count if it doesn't.
+    std::string sql_query  = "INSERT INTO unigrams (word, count) VALUES (\""+token_str+"\", " + count_str + ") ";
+                sql_query += "ON DUPLICATE KEY UPDATE count=count+"+count_str+";";
     this->mysql_interface->exec_statement(sql_query);
 }
 
