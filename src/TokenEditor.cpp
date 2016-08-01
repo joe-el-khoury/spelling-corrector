@@ -218,13 +218,13 @@ edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance
             replaces_temp   = TokenEditor::get_replace_edits(edit);
             inserts_temp    = TokenEditor::get_insert_edits(edit);
             
-            delete_edits    = helper::merge<deletes>({delete_edits, deletes_temp});
-            transpose_edits = helper::merge<transposes>({transpose_edits, transposes_temp});
-            replace_edits   = helper::merge<replaces>({replace_edits, replaces_temp});
-            insert_edits    = helper::merge<inserts>({insert_edits, inserts_temp});
+            delete_edits    = helper::merge<Token>({delete_edits, deletes_temp});
+            transpose_edits = helper::merge<Token>({transpose_edits, transposes_temp});
+            replace_edits   = helper::merge<Token>({replace_edits, replaces_temp});
+            insert_edits    = helper::merge<Token>({insert_edits, inserts_temp});
         }
 
-        all_edits = helper::merge<edits>({
+        all_edits = helper::merge<Token>({
             all_edits,
             delete_edits, transpose_edits,
             replace_edits, insert_edits

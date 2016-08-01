@@ -9,7 +9,7 @@ namespace helper {
  * Merges a bunch of vectors together into the first vector.
  */
 template<typename T>
-T& merge (std::vector<T>&& _vector_list) {
+T& merge (std::vector<T>& _vector_list) {
     // We will merge all the vectors into the first vector.
     T& merge_into = _vector_list[0];
 
@@ -33,6 +33,11 @@ T& merge (std::vector<T>&& _vector_list) {
     }
 
     return merge_into;
+}
+
+template<typename T>
+std::vector<T>& merge (std::vector< std::vector<T> >&& _vector_list) {
+    return merge(_vector_list);
 }
 
 } /* namespace helper */
