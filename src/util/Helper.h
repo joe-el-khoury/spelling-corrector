@@ -2,6 +2,7 @@
 #define HELPER_H
 
 #include <vector>
+#include <algorithm>
 
 namespace helper {
 
@@ -21,16 +22,16 @@ T& merge (std::vector<T>& _vector_list) {
     total_size -= merge_into.size();
 
     merge_into.reserve(total_size);
-    for (T& vec : _vector_list) {
-        if (vec == merge_into) {
-            continue;
+    std::for_each(_vector_list.begin(), _vector_list.end(),
+        /**
+         * Concatenate the vectors.
+         */
+        [&](const T& _vec) {
+            auto begin_move_iter = std::make_move_iterator(_vec.begin());
+            auto end_move_iter   = std::make_move_iterator(_vec.end());
+            merge_into.insert(merge_into.end(), begin_move_iter, end_move_iter);
         }
-
-        // Move the elements into the vector.
-        auto begin_move_iter = std::make_move_iterator(vec.begin());
-        auto end_move_iter   = std::make_move_iterator(vec.end());
-        merge_into.insert(merge_into.end(), begin_move_iter, end_move_iter);
-    }
+    );
 
     return merge_into;
 }
