@@ -8,10 +8,7 @@
 
 class Ngram {
 public:
-    // Add a token to the list of tokens.
     void add (const Token&);
-
-    // Whether there are anymore ngrams to get.
     bool more (unsigned int);
 
     std::vector<Token> get_ngram (unsigned int);
