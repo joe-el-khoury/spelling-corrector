@@ -22,7 +22,7 @@ T& merge (std::vector<T>& _vector_list) {
     total_size -= merge_into.size();
 
     merge_into.reserve(total_size);
-    std::for_each(_vector_list.begin(), _vector_list.end(),
+    std::for_each(_vector_list.begin()+1, _vector_list.end(),
         /**
          * Concatenate the vectors.
          */
