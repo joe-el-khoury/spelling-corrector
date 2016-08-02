@@ -1,3 +1,6 @@
+#include <thread>
+#include <future>
+
 #include "TokenEditor.h"
 #include "util/Helper.h"
 
@@ -209,19 +212,18 @@ edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance
     replaces   replace_edits,   replaces_temp;
     inserts    insert_edits,    inserts_temp;
     
-    // The first edit is the token itself.
     edits all_edits = {_to_edit};
     for (unsigned int i = 0; i < _edit_distance; ++i) {
         for (const Token& edit : all_edits) {
-            deletes_temp    = TokenEditor::get_delete_edits(edit);
-            transposes_temp = TokenEditor::get_transpose_edits(edit);
-            replaces_temp   = TokenEditor::get_replace_edits(edit);
-            inserts_temp    = TokenEditor::get_insert_edits(edit);
-            
-            delete_edits    = helper::merge<Token>({delete_edits, deletes_temp});
-            transpose_edits = helper::merge<Token>({transpose_edits, transposes_temp});
-            replace_edits   = helper::merge<Token>({replace_edits, replaces_temp});
-            insert_edits    = helper::merge<Token>({insert_edits, inserts_temp});
+            std::future<deletes>    deletes_future    = std::async(TokenEditor::get_delete_edits, edit);
+            std::future<transposes> transposes_future = std::async(TokenEditor::get_transpose_edits, edit);
+            std::future<replaces>   replaces_future   = std::async(TokenEditor::get_replace_edits, edit);
+            std::future<inserts>    inserts_future    = std::async(TokenEditor::get_insert_edits, edit);
+
+            delete_edits    = helper::merge<Token>({delete_edits, deletes_future.get()});
+            transpose_edits = helper::merge<Token>({transpose_edits, transposes_future.get()});
+            replace_edits   = helper::merge<Token>({replace_edits, replaces_future.get()});
+            insert_edits    = helper::merge<Token>({insert_edits, inserts_future.get()});
         }
 
         all_edits = helper::merge<Token>({
