@@ -1,9 +1,35 @@
 #include <unordered_map>
+#include <algorithm>
 
+#include "Ngram.h"
 #include "SpellingCorrectorTrainer.h"
 #include "../config/DatabaseConfigReader.h"
 #include "util/MD5FileHasher.h"
 #include "TokenHistogram.h"
+
+/**
+ * Converts an ngram to a string.
+ */
+std::string ngram_to_str (const Ngram& _ngram, unsigned int _n, char _sep) {
+    std::vector<Token> ngram = _ngram.get_ngram(_n);
+    if (ngram.empty()) {
+        return std::string();
+    }
+
+    std::string ret;
+    std::for_each(ngram.begin(), ngram.end()-1,
+        /**
+         * Construct the string like so: "<token><sep><token>..."
+         */
+        [&](const Token& _token) {
+            ret += (_token.get_token_str() + _sep);
+        }
+    );
+    // The last token doesn't have a separation character after it.
+    ret += (ngram.end()-1)->get_token_str();
+
+    return ret;
+}
 
 /**
  * Initialize some member variables and stuff.
