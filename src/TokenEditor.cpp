@@ -133,8 +133,8 @@ transposes TokenEditor::get_transpose_edits (const Token& _to_edit) {
     return ret;
 }
 
-// Initialize the alphabet.
-const std::vector<char> TokenEditor::alphabet = {
+// The English alphabet.
+const std::vector<char> alphabet = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 };
@@ -159,7 +159,7 @@ replaces TokenEditor::get_replace_edits (const Token& _to_edit) {
     // Go through the string, replacing characters.
     for (unsigned int i = 0; i < token_str_length; ++i) {
         replace = token_str;
-        for (const char alphabet_char : TokenEditor::alphabet) {
+        for (const char alphabet_char : alphabet) {
             replace[i] = alphabet_char;
             ret[j] = Token(replace);
             j++;
@@ -189,7 +189,7 @@ inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
     // Go through the string, inserting into it.
     for (unsigned int i = 0; i < token_str_length+1; ++i) {
         insert = token_str;
-        for (const char alphabet_char : TokenEditor::alphabet) {
+        for (const char alphabet_char : alphabet) {
             // The string we are inserting. It consists solely of the character.
             std::string alphabet_str(1, alphabet_char);
             
@@ -206,19 +206,24 @@ inserts TokenEditor::get_insert_edits (const Token& _to_edit) {
 }
 
 edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance=1) {
-    //         Stores edits.    Throwaway variables.
-    deletes    delete_edits,    deletes_temp;
-    transposes transpose_edits, transposes_temp;
-    replaces   replace_edits,   replaces_temp;
-    inserts    insert_edits,    inserts_temp;
+    // Used to store edits.
+    deletes    delete_edits;
+    transposes transpose_edits;
+    replaces   replace_edits;
+    inserts    insert_edits;
+
+    std::future<deletes>    deletes_future;
+    std::future<transposes> transposes_future;
+    std::future<replaces>   replaces_future;
+    std::future<inserts>    inserts_future;
     
     edits all_edits = {_to_edit};
     for (unsigned int i = 0; i < _edit_distance; ++i) {
         for (const Token& edit : all_edits) {
-            std::future<deletes>    deletes_future    = std::async(TokenEditor::get_delete_edits, edit);
-            std::future<transposes> transposes_future = std::async(TokenEditor::get_transpose_edits, edit);
-            std::future<replaces>   replaces_future   = std::async(TokenEditor::get_replace_edits, edit);
-            std::future<inserts>    inserts_future    = std::async(TokenEditor::get_insert_edits, edit);
+            deletes_future    = std::async(TokenEditor::get_delete_edits, edit);
+            transposes_future = std::async(TokenEditor::get_transpose_edits, edit);
+            replaces_future   = std::async(TokenEditor::get_replace_edits, edit);
+            inserts_future    = std::async(TokenEditor::get_insert_edits, edit);
 
             delete_edits    = helper::merge<Token>({delete_edits, deletes_future.get()});
             transpose_edits = helper::merge<Token>({transpose_edits, transposes_future.get()});
