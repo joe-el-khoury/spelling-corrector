@@ -4,7 +4,7 @@ OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Ngram.o
 CC = g++
 DEBUG = -g
-CFLAGS = -c -Wall -O3 -std=c++14 -pthread -I/usr/include/cppconn $(DEBUG)
+CFLAGS = -c -Wall -std=c++14 -pthread -I/usr/include/cppconn $(DEBUG)
 LFLAGS = -lmysqlcppconn -lcrypto -lboost_iostreams -pthread $(DEBUG)
 
 .PHONY: directories
@@ -37,7 +37,7 @@ bin/Tokenizer.o : src/Tokenizer.* src/Token.h src/util/FileReader.h
 bin/SpellingCorrector.o : src/SpellingCorrector.* src/Tokenizer.h src/TokenHistogram.h src/util/FileReader.h
 	$(CC) $(CFLAGS) src/SpellingCorrector.cpp -o bin/SpellingCorrector.o
 
-bin/SpellingCorrectorTrainer.o : src/SpellingCorrectorTrainer.* src/util/FileReader.h src/Tokenizer.h src/util/MySQLInterface.h src/Token.h src/util/MD5FileHasher.h
+bin/SpellingCorrectorTrainer.o : src/SpellingCorrectorTrainer.* src/util/FileReader.h src/Tokenizer.h src/util/MySQLInterface.h src/Token.h src/util/MD5FileHasher.h src/Ngram.h
 	$(CC) $(CFLAGS) src/SpellingCorrectorTrainer.cpp -o bin/SpellingCorrectorTrainer.o
 
 bin/TokenEditor.o : src/TokenEditor.* src/Token.h src/util/Helper.h
