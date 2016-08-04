@@ -9,7 +9,7 @@
 class Ngram {
 public:
     void add (const Token&);
-    bool more (unsigned int);
+    bool more (unsigned int) const;
 
     std::vector<Token> get_ngram (unsigned int);
 private:

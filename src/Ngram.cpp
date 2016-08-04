@@ -8,6 +8,13 @@ void Ngram::add (const Token& _to_add) {
 }
 
 /**
+ * Checks whether there are any more ngrams to get from the list of tokens.
+ */
+bool Ngram::more (unsigned int _n) const {
+    return _n <= this->tokens.size();
+}
+
+/**
  * Gets an ngram from the list of tokens.
  * _n is the n in ngrams.
  */
@@ -26,11 +33,4 @@ std::vector<Token> Ngram::get_ngram (unsigned int _n) {
     this->tokens.pop_front();
 
     return ret;
-}
-
-/**
- * Checks whether there are any more ngrams to get from the list of tokens.
- */
-bool Ngram::more (unsigned int _n) {
-    return _n <= this->tokens.size();
 }

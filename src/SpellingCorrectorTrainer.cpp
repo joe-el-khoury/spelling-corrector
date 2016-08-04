@@ -10,7 +10,7 @@
 /**
  * Converts an ngram to a string.
  */
-std::string ngram_to_str (const Ngram& _ngram, unsigned int _n, char _sep) {
+std::string ngram_to_str (Ngram& _ngram, unsigned int _n, char _sep) {
     std::vector<Token> ngram = _ngram.get_ngram(_n);
     if (ngram.empty()) {
         return std::string();
