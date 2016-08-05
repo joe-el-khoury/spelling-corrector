@@ -11,7 +11,7 @@ namespace helper {
  */
 template<typename T>
 T& merge (std::vector<T>& _vector_list) {
-    // We will merge all the vectors into the first vector.
+    // Merge all the vectors into the first vector.
     T& merge_into = _vector_list[0];
 
     // Get the total size of the vectors.
