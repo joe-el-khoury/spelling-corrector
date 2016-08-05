@@ -17,15 +17,15 @@ typedef std::vector<split_pair> splits;
 
 class TokenEditor {
 public:
-    static edits get_edits (const Token&, unsigned int);
+    static const edits& get_edits (edits&, const Token&, unsigned int);
     static unsigned int get_edit_distance (const Token&, const Token&);
 private:
     // Edit functions.
-    static deletes    get_delete_edits    (const Token&);
-    static transposes get_transpose_edits (const Token&);
-    static replaces   get_replace_edits   (const Token&);
-    static inserts    get_insert_edits    (const Token&);
-    static splits     get_split_edits     (const Token&);
+    static deletes&    get_delete_edits    (deletes&&, const Token&);
+    static transposes& get_transpose_edits (transposes&&, const Token&);
+    static replaces&   get_replace_edits   (replaces&&, const Token&);
+    static inserts&    get_insert_edits    (inserts&&, const Token&);
+    static splits&     get_split_edits     (splits&&, const Token&);
 };
 
 #endif /* TOKENEDITOR_H */
