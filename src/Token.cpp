@@ -68,9 +68,28 @@ const std::string& Token::get_token_str () const {
     return this->token_str;
 }
 
+namespace {
+template<typename T>
+void print_vect (const std::vector<T>& _v) {
+    for (const T& elem : _v) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+}
+
+template<>
+void print_vect<Token> (const std::vector<Token>& _v) {
+    for (const Token& tk : _v) {
+        std::cout << tk.get_token_str() << " ";
+    }
+    std::cout << std::endl;
+}
+}
+
 /**
  * Gets all the edits for this token.
  */
-std::vector<Token> Token::get_edits (unsigned int _edit_distance) const {
-    return TokenEditor::get_edits(*this, _edit_distance);
+const std::vector<Token>& Token::get_edits (unsigned int _edit_distance) {
+    this->token_edits = TokenEditor::get_edits(this->token_edits, *this, _edit_distance);
+    return this->token_edits;
 }

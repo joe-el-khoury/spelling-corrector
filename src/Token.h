@@ -7,8 +7,8 @@
 
 class Token {
 public:
-    Token () { /* empty constructor */ };
-    Token (const std::string&);
+    explicit Token () { /* empty constructor */ };
+    explicit Token (const std::string&);
     Token (Token&&);
     Token& operator= (Token&&);
     Token (const Token&);
@@ -17,7 +17,7 @@ public:
     bool operator== (const Token&) const;
     bool operator== (const std::string&) const;
 
-    std::vector<Token> get_edits (unsigned int=1) const;
+    const std::vector<Token>& get_edits (unsigned int=1);
 
     // Used for cleaning up the token.
     void delimit_token ();
@@ -27,6 +27,7 @@ public:
 private:
     bool is_clean_char (char);
     std::string token_str;
+    std::vector<Token> token_edits;
 };
 
 #endif /* TOKEN_H */
