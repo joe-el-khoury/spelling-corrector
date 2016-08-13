@@ -25,7 +25,7 @@ private:
     void insert_token_into_db (const Token&);
     void insert_token_into_db (const Token&, unsigned long);
 
-    void add_to_already_trained_on (const std::string&);
+    void add_to_already_trained_on (const std::string&, unsigned int=1);
     bool already_trained_on (const std::string&, unsigned int=1);
 };
 

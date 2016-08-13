@@ -103,6 +103,13 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
  */
 void SpellingCorrectorTrainer::train (const std::string& _file_name,
                                       const std::vector<unsigned int>& _ngrams_to_train_with) {
+    // A vector storing all ngrams we haven't yet trained with.
+    std::vector<unsigned int> real_ngrams_to_train_with = _ngrams_to_train_with;
+    std::remove_if(real_ngrams_to_train_with.begin(), real_ngrams_to_train_with.end(),
+        [&](unsigned int _ngram) {
+            return this->already_trained_on(_file_name, _ngram);
+        }
+    );
 }
 
 /**
@@ -150,10 +157,12 @@ bool SpellingCorrectorTrainer::already_trained_on (const std::string& _file_name
 /**
  * Added the MD5 hash of a file to the database backend.
  */
-void SpellingCorrectorTrainer::add_to_already_trained_on (const std::string& _file_name) {
+void SpellingCorrectorTrainer::add_to_already_trained_on (const std::string& _file_name,
+                                                          unsigned int _ngram) {
     std::string md5_hash = md5hasher::get_hash(_file_name);
 
     // Add the MD5 hash to the database.
-    const std::string sql_query = "INSERT IGNORE INTO files(md5_hash) VALUES(\""+md5_hash+"\");";
+    std::string sql_query  = "INSERT IGNORE INTO files(md5_hash, ngram) VALUES(\""+md5_hash+", ";
+                sql_query += std::to_string(_ngram)+");";
     this->mysql_interface->exec_statement(sql_query);
 }
