@@ -26,11 +26,13 @@ public:
 
     void exec_statement (const std::string&);
     sql::ResultSet* get_last_result ();
+    unsigned int get_num_rows_returned ();
 private:
     // The connection to the database.
     sql::Connection* db_connection;
     // The last result (if any) obtained from the last statement.
     sql::ResultSet* last_result;
+    unsigned int num_rows_returned;
 };
 
 #endif

@@ -48,8 +48,9 @@ void MySQLInterface::exec_statement (const std::string& _sql_query) {
     // Executing the statement returns a boolean value.
     // If true is returned, then the statement was a "getter".
     if (returned_result) {
-        // I hate camel case!
+        // Get the result set and the number of rows that were returned.
         this->last_result = stmt->getResultSet();
+        this->num_rows_returned = this->last_result->rowsCount();
     }
 
     delete stmt;
@@ -60,4 +61,8 @@ void MySQLInterface::exec_statement (const std::string& _sql_query) {
  */
 sql::ResultSet* MySQLInterface::get_last_result () {
     return this->last_result;
+}
+
+unsigned int MySQLInterface::get_num_rows_returned () {
+    return this->num_rows_returned;
 }
