@@ -134,7 +134,7 @@ bool SpellingCorrectorTrainer::already_trained_on (const std::string& _file_name
     const std::string sql_query = "SELECT * FROM files WHERE md5_hash=\""+md5_hash+"\";";
     this->mysql_interface->exec_statement(sql_query);
 
-    return (this->mysql_interface->get_last_result()->next());
+    return (this->mysql_interface->get_num_rows_returned() != 0);
 }
 
 /**
