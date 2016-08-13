@@ -99,6 +99,13 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
 }
 
 /**
+ * Same as the training function above, but allows you to train with a specified number of ngrams.
+ */
+void SpellingCorrectorTrainer::train (const std::string& _file_name,
+                                      const std::vector<unsigned int>& _ngrams_to_train_with) {
+}
+
+/**
  * Inserts the token string into the database backend.
  */
 void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert) {
@@ -123,18 +130,21 @@ void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert, un
 /**
  * Checks the database backend to see if we've already trained on a specific file.
  * This is done by getting the MD5 hash of the file and seeing if it exists in the database.
+ * The second ngram argument checks if we've trained with a certain ngram on the file.
  */
-bool SpellingCorrectorTrainer::already_trained_on (const std::string& _file_name) {
+bool SpellingCorrectorTrainer::already_trained_on (const std::string& _file_name,
+                                                   unsigned int _ngram) {
     std::string md5_hash = md5hasher::get_hash(_file_name);
     if (md5_hash.empty()) {
         return true;
     }
 
-    // Get the rows with the MD5 hash of the file.
-    const std::string sql_query = "SELECT * FROM files WHERE md5_hash=\""+md5_hash+"\";";
+    // Get the rows with the MD5 hash of the file and the ngram.
+    std::string sql_query  = "SELECT * FROM files WHERE md5_hash=\""+md5_hash+"\" and ";
+                sql_query += "ngram="+std::to_string(_ngram)+";";
     this->mysql_interface->exec_statement(sql_query);
 
-    return (this->mysql_interface->get_num_rows_returned() != 0);
+    return !(this->mysql_interface->get_num_rows_returned() == 0);
 }
 
 /**

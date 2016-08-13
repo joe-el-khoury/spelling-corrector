@@ -14,6 +14,7 @@ public:
     SpellingCorrectorTrainer ();
     
     void train (const std::string&);
+    void train (const std::string&, const std::vector<unsigned int>&);
 private:
     // Used for training.
     std::unique_ptr<FileReader> file_reader;
@@ -25,7 +26,7 @@ private:
     void insert_token_into_db (const Token&, unsigned long);
 
     void add_to_already_trained_on (const std::string&);
-    bool already_trained_on (const std::string&);
+    bool already_trained_on (const std::string&, unsigned int=1);
 };
 
 #endif
