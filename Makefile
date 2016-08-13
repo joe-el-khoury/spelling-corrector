@@ -4,8 +4,8 @@ OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Ngram.o
 CC = g++
 DEBUG = -g
-CFLAGS = -c -Wall -std=c++14 -pthread -I/usr/include/cppconn $(DEBUG)
-LFLAGS = -lmysqlcppconn -lcrypto -lboost_iostreams -pthread $(DEBUG)
+CFLAGS = -c -Wall -std=c++14 -I/usr/include/cppconn $(DEBUG)
+LFLAGS = -lmysqlcppconn -lcrypto -lboost_program_options -lboost_iostreams $(DEBUG)
 
 .PHONY: directories
 

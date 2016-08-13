@@ -1,21 +1,44 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
-#include "SpellingCorrector.h"
+#include <boost/program_options.hpp>
+
 #include "SpellingCorrectorTrainer.h"
 
-int main (int argc, const char* argv[]) {
-    if (argc < 3) {
-        std::cout << "usage: SpellingCorrector --train <file>" << std::endl;
-        return 0;
-    } else if (std::string(argv[1]) != std::string("--train")) {
-        std::cout << "usage: SpellingCorrector --train <file>" << std::endl;
-        return 0;
-    } else {
-        SpellingCorrectorTrainer trainer;
-        std::string file_name(argv[2]);
-        std::cout << "Training..." << std::endl;
-        trainer.train(file_name);
+namespace po = boost::program_options;
+
+int main (int argc, char const* argv[]) {
+    std::vector<unsigned int> ngrams_to_train_with;
+    std::string training_file;
+    
+    po::options_description training_desc("Spelling corrector training");
+    training_desc.add_options()
+        ("help,h", "View available options.")
+        ("ngram,n", po::value<decltype(ngrams_to_train_with)>(&ngrams_to_train_with)
+                                        ->value_name("n")->multitoken()
+                                        ->default_value(std::vector<unsigned int>(1, 1), "1"),
+                                                    "Train with n-gram (default is 1). "
+                                                    "The higher the number, "
+                                                    "the better the spelling correction will be, "
+                                                    "but the slower the training will be. "
+                                                    "It is recommended to use 1 and 2.")
+        
+        ("train,t", po::value<decltype(training_file)>(&training_file)
+                                        ->value_name("path/to/file")->required(),
+                                                    "Train on a file.");
+
+    po::variables_map vm;
+    try {
+        if (vm.count("help")) {
+            std::cout << training_desc;
+            return 0;
+        }
+        po::store(po::command_line_parser(argc, argv).options(training_desc).run(), vm);
+        po::notify(vm);
+    } catch (...) {
+        std::cout << training_desc;
+        return 1;
     }
     return 0;
 }
