@@ -105,11 +105,18 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name,
                                       const std::vector<unsigned int>& _ngrams_to_train_with) {
     // A vector storing all ngrams we haven't yet trained with.
     std::vector<unsigned int> real_ngrams_to_train_with = _ngrams_to_train_with;
-    std::remove_if(real_ngrams_to_train_with.begin(), real_ngrams_to_train_with.end(),
-        [&](unsigned int _ngram) {
-            return this->already_trained_on(_file_name, _ngram);
+    std::for_each(real_ngrams_to_train_with.begin(), real_ngrams_to_train_with.end(),
+        /**
+         * Set an ngram to -1 if we've already trained on that particular one.
+         */
+        [&](unsigned int& _ngram) {
+            if (this->already_trained_on(_file_name, _ngram)) {
+                _ngram = 0;
+            }
         }
     );
+
+    // to be continued...
 }
 
 /**
