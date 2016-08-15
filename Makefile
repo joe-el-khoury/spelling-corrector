@@ -4,8 +4,8 @@ OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Ngram.o
 CC = g++
 DEBUG = -g
-CFLAGS = -c -Wall -std=c++14 -I/usr/include/cppconn $(DEBUG)
-LFLAGS = -lmysqlcppconn -lcrypto -lboost_program_options -lboost_iostreams $(DEBUG)
+CFLAGS = -c -Wall -std=c++14 -I/usr/include/cppconn -lpthread $(DEBUG)
+LFLAGS = -lmysqlcppconn -lcrypto -lboost_program_options -lboost_iostreams -lpthread $(DEBUG)
 
 .PHONY: directories
 
@@ -19,7 +19,7 @@ bin:
 bin/SpellingCorrector : $(OBJS)
 	$(CC) -o bin/SpellingCorrector $(OBJS) $(LFLAGS)
 
-bin/Main.o : src/Main.cpp src/SpellingCorrector.h src/SpellingCorrectorTrainer.h
+bin/Main.o : src/Main.cpp src/SpellingCorrector.h src/SpellingCorrectorTrainer.h src/Ngram.h
 	$(CC) $(CFLAGS) src/Main.cpp -o bin/Main.o
 
 bin/FileReader.o : src/util/FileReader.*
