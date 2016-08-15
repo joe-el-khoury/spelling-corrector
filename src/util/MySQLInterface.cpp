@@ -38,6 +38,32 @@ MySQLInterface::~MySQLInterface () {
 }
 
 /**
+ * Checks if the query is an insert query.
+ */
+bool is_insert_query (const std::string& _sql_query) {
+    // Predicate for the search algorithm.
+    // One small bug: if the word insert is part of a select query, for example, it
+    // will be incorrectly considered an insert query.
+    struct is_insert {
+        bool operator() (char c1, char c2) {
+            return std::tolower(c1) == std::tolower(c2);
+        }
+    };
+
+    std::string insert = "insert";
+    std::string::const_iterator it = std::search(
+        _sql_query.begin(), _sql_query.end(), insert.begin(), insert.end(),
+        is_insert()
+    );
+
+    return (it != _sql_query.end());
+}
+
+void MySQLInterface::add_to_insert_queue (const std::string& _sql_query) {
+    this->insert_queue.push(_sql_query);
+}
+
+/**
  * Execute a statament on the database.
  */
 void MySQLInterface::exec_statement (const std::string& _sql_query) {
