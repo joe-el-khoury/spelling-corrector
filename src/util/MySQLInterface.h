@@ -6,6 +6,11 @@
 #include <statement.h>
 #include <resultset.h>
 
+#include <memory>
+#include <thread>
+#include <mutex>
+#include <queue>
+
 namespace mysql_interface {
 struct db_info {
     std::string db_url_prefix;
@@ -33,6 +38,14 @@ private:
     // The last result (if any) obtained from the last statement.
     sql::ResultSet* last_result;
     unsigned int num_rows_returned;
+
+    // For delaying insertions.
+    std::queue<std::string> insert_queue;
+    void add_to_insert_queue (const std::string&);
+    const std::queue<std::string>& get_insert_queue () const;
+    // For threading.
+    std::unique_ptr<std::thread> insertion_thread;
+    std::mutex insert_queue_mutex;
 };
 
 #endif
