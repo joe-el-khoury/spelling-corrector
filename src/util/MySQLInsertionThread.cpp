@@ -11,7 +11,7 @@ void MySQLInsertionThread::process_queries () {
         // Keep in new scope so the mutex becomes unlocked when the lock_guard is destroyed!
         {
             std::lock_guard<std::mutex> lock(this->insertion_queue_mutex);
-            stmt->execute(_sql_query);
+            stmt->execute(this->insertion_queue.front());
             this->insertion_queue.pop();
         }
     }
@@ -24,7 +24,7 @@ void MySQLInsertionThread::process_queries () {
  */
 void MySQLInsertionThread::monitor_and_insert () {
     while (this->running) {
-        if (this->get_insert_queue_size() >= this->insert_every) {
+        if (this->get_insertion_queue_size() >= this->insert_every) {
             this->process_queries();
         }
     }
