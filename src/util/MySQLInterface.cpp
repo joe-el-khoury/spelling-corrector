@@ -24,6 +24,9 @@ MySQLInterface::MySQLInterface (const mysql_interface::db_info& _db_info) {
     // Connect to the database.
     sql::Driver* driver = get_driver_instance();
     this->db_connection = driver->connect(db_url, db_uname, db_password);
+
+    // Set the running flag to true to keep the thread running.
+    this->running = true;
 }
 
 /**
@@ -35,6 +38,9 @@ MySQLInterface::~MySQLInterface () {
     }
     this->db_connection->close();
     delete this->db_connection;
+
+    // Set the running flag to false to stop the thread.
+    this->running = false;
 }
 
 /**

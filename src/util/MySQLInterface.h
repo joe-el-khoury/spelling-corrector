@@ -44,6 +44,7 @@ private:
     void add_to_insert_queue (const std::string&);
     const std::queue<std::string>& get_insert_queue () const;
     // For threading.
+    bool running;
     std::unique_ptr<std::thread> insertion_thread;
     std::mutex insert_queue_mutex;
 };
