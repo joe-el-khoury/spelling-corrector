@@ -11,6 +11,8 @@
 #include <mutex>
 #include <queue>
 
+#include "MySQLInsertionThread.h"
+
 namespace mysql_interface {
 struct db_info {
     std::string db_url_prefix;
@@ -39,14 +41,7 @@ private:
     sql::ResultSet* last_result;
     unsigned int num_rows_returned;
 
-    // For delaying insertions.
-    std::queue<std::string> insert_queue;
-    void add_to_insert_queue (const std::string&);
-    unsigned int get_insert_queue_size ();
-    // For threading.
-    bool running;
-    std::unique_ptr<std::thread> insertion_thread;
-    std::mutex insert_queue_mutex;
+    MySQLInsertionThread insertion_thread;
 };
 
 #endif
