@@ -41,6 +41,7 @@ private:
     sql::ResultSet* last_result;
     unsigned int num_rows_returned;
 
+    // The thread responsible for dealing with insertions into the database.
     MySQLInsertionThread insertion_thread;
 };
 
