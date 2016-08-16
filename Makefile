@@ -1,7 +1,7 @@
 OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o bin/IteratorInterface.o \
 	bin/MySQLInterface.o bin/DatabaseConfigReader.o bin/SpellingCorrectorTrainer.o \
-	bin/Ngram.o
+	bin/Ngram.o bin/MySQLInsertionThread.o
 CC = g++
 DEBUG = -g
 CFLAGS = -c -Wall -std=c++14 -I/usr/include/cppconn -lpthread $(DEBUG)
@@ -46,7 +46,7 @@ bin/TokenEditor.o : src/TokenEditor.* src/Token.h src/util/Helper.h
 bin/IteratorInterface.o : src/util/IteratorInterface.*
 	$(CC) $(CFLAGS) src/util/IteratorInterface.cpp -o bin/IteratorInterface.o
 
-bin/MySQLInterface.o : src/util/MySQLInterface.*
+bin/MySQLInterface.o : src/util/MySQLInterface.* src/util/MySQLInsertionThread.h
 	$(CC) $(CFLAGS) src/util/MySQLInterface.cpp -o bin/MySQLInterface.o
 
 bin/DatabaseConfigReader.o : config/DatabaseConfigReader.* src/util/MySQLInterface.h
@@ -54,6 +54,9 @@ bin/DatabaseConfigReader.o : config/DatabaseConfigReader.* src/util/MySQLInterfa
 
 bin/Ngram.o : src/Ngram.* src/Token.h
 	$(CC) $(CFLAGS) src/Ngram.cpp -o bin/Ngram.o
+
+bin/MySQLInsertionThread.o : src/util/MySQLInsertionThread.*
+	$(CC) $(CFLAGS) src/util/MySQLInsertionThread.cpp -o bin/MySQLInsertionThread.o
 
 clean:
 	rm -rf bin/*
