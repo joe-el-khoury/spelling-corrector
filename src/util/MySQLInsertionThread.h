@@ -22,9 +22,10 @@ private:
     // How often to run the insert queries.
     const unsigned int insert_every = 1000;
 
+    void monitor_and_insert ();
     bool running;
     std::unique_ptr<std::thread> insertion_thread;
-    std::mutex queue_mutex;
+    std::mutex insertion_queue_mutex;
 
     sql::Connection* db_connection;
 };
