@@ -42,7 +42,7 @@ private:
     unsigned int num_rows_returned;
 
     // The thread responsible for dealing with insertions into the database.
-    MySQLInsertionThread insertion_thread;
+    std::unique_ptr<MySQLInsertionThread> insertion_thread;
 };
 
 #endif

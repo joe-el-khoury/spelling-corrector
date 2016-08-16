@@ -3,13 +3,17 @@
 /**
  * Launches the thread.
  */
-MySQLInsertionThread::MySQLInsertionThread () {
+MySQLInsertionThread::MySQLInsertionThread (sql::Connection* _db_connection) {
+    this->running = true;
+    this->db_connection = _db_connection;
 }
 
 /**
  * Stop the thread.
  */
 MySQLInsertionThread::~MySQLInsertionThread () {
+    this->running = false;
+    delete this->db_connection;
 }
 
 void MySQLInsertionThread::add_to_insert_queue (const std::string& _insert_query) {
