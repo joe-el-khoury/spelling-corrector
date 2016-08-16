@@ -14,14 +14,14 @@ public:
     MySQLInsertionThread (sql::Connection*);
     ~MySQLInsertionThread ();
 
-    void add_to_insert_queue (const std::string&);
+    void add_to_insertion_queue (const std::string&);
 private:
-    std::queue<std::string> insert_queue;
-    unsigned int get_insert_queue_size ();
-    void exec_insert_query (const std::string&);
+    std::queue<std::string> insertion_queue;
+    unsigned int get_insertion_queue_size ();
     // How often to run the insert queries.
     const unsigned int insert_every = 1000;
 
+    void process_queries ();
     void monitor_and_insert ();
     bool running;
     std::unique_ptr<std::thread> insertion_thread;
