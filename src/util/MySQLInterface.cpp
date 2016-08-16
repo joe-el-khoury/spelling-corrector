@@ -68,7 +68,7 @@ bool is_insert_query (const std::string& _sql_query) {
 void MySQLInterface::exec_statement (const std::string& _sql_query) {
     // Check if the query is an insert first.
     if (is_insert_query(_sql_query)) {
-        this->insertion_thread->add_to_insert_queue(_sql_query);
+        this->insertion_thread->add_to_insertion_queue(_sql_query);
         return;
     }
     
