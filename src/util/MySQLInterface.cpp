@@ -63,6 +63,12 @@ bool is_insert_query (const std::string& _sql_query) {
  * Execute a statament on the database.
  */
 void MySQLInterface::exec_statement (const std::string& _sql_query) {
+    // Check if the query is an insert first.
+    if (is_insert_query(_sql_query)) {
+        this->insertion_thread->add_to_insert_queue(_sql_query);
+        return;
+    }
+    
     // Create the SQL statement and execute it.
     sql::Statement* stmt = this->db_connection->createStatement();
     bool returned_result = stmt->execute(_sql_query);
