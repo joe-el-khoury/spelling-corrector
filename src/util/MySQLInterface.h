@@ -42,7 +42,7 @@ private:
     // For delaying insertions.
     std::queue<std::string> insert_queue;
     void add_to_insert_queue (const std::string&);
-    const std::queue<std::string>& get_insert_queue () const;
+    unsigned int get_insert_queue_size ();
     // For threading.
     bool running;
     std::unique_ptr<std::thread> insertion_thread;

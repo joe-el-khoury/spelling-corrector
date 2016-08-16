@@ -66,9 +66,13 @@ bool is_insert_query (const std::string& _sql_query) {
 }
 
 void MySQLInterface::add_to_insert_queue (const std::string& _sql_query) {
-    // Lock the thread and insert into the queue.
     std::lock_guard<std::mutex> guard(this->insert_queue_mutex);
     this->insert_queue.push(_sql_query);
+}
+
+unsigned int MySQLInterface::get_insert_queue_size () {
+    std::lock_guard<std::mutex> guard(this->insert_queue_mutex);
+    return this->insert_queue.size();
 }
 
 /**
