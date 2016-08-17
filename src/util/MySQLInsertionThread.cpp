@@ -8,15 +8,23 @@ void MySQLInsertionThread::process_queries () {
     sql::Statement* stmt = this->db_connection->createStatement();
     
     while (!(this->insertion_queue.empty())) {
-        // Keep in new scope so the mutex becomes unlocked when the lock_guard is destroyed!
-        {
-            std::lock_guard<std::mutex> lock(this->insertion_queue_mutex);
+        if (this->insertion_thread->joinable()) {
+            // Lock the mutex only if the thread is joinable.
+            {
+                std::lock_guard<std::mutex> lock(this->insertion_queue_mutex);
+                stmt->execute(this->insertion_queue.front());
+                this->insertion_queue.pop();
+            }
+        
+        } else {
             stmt->execute(this->insertion_queue.front());
             this->insertion_queue.pop();
         }
     }
 
-    delete stmt;
+    if (stmt) {
+        delete stmt;
+    }
 }
 
 /**
@@ -34,18 +42,21 @@ void MySQLInsertionThread::monitor_and_insert () {
 }
 
 /**
- * Launches the thread.
+ * Stops the insertion thread and goes through the queue.
  */
-MySQLInsertionThread::MySQLInsertionThread (sql::Connection* _db_connection) {
-    this->running = true;
-    this->db_connection = _db_connection;
+void MySQLInsertionThread::stop () {
+    this->running = false;
+    this->insertion_thread->join();
 }
 
 /**
- * Stop the thread.
+ * Launches the thread.
  */
-MySQLInsertionThread::~MySQLInsertionThread () {
-    this->running = false;
+MySQLInsertionThread::MySQLInsertionThread (sql::Connection* _db_connection) {
+    this->insertion_thread = std::make_unique<std::thread>(&MySQLInsertionThread::monitor_and_insert, this);
+    this->running          = true;
+
+    this->db_connection = _db_connection;
 }
 
 void MySQLInsertionThread::add_to_insertion_queue (const std::string& _insert_query) {

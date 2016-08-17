@@ -4,6 +4,7 @@
 #include <connection.h>
 #include <statement.h>
 
+#include <atomic>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -12,8 +13,8 @@
 class MySQLInsertionThread {
 public:
     MySQLInsertionThread (sql::Connection*);
-    ~MySQLInsertionThread ();
 
+    void stop ();
     void add_to_insertion_queue (const std::string&);
 private:
     std::queue<std::string> insertion_queue;
