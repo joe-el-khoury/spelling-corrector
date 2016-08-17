@@ -5,7 +5,6 @@
 #include "SpellingCorrectorTrainer.h"
 #include "../config/DatabaseConfigReader.h"
 #include "util/MD5FileHasher.h"
-#include "TokenHistogram.h"
 
 /**
  * Converts an ngram to a string.
@@ -57,12 +56,6 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
     // Create the file reader.
     this->file_reader = std::make_unique<FileReader>(_file_name);
 
-    // How often to commit from memory to the database.
-    // Experiment with this number.
-    unsigned int commit_every = 1000;
-
-    // Number of tokens we have in memory so far.
-    unsigned int tokens_in_mem = 0;
     std::string read_line;
     while (!(this->file_reader->done_reading)) {
         // Read a whole line from the file.
@@ -70,31 +63,14 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
 
         // Tokenize the line and keep the tokens in memory in the token histogram.
         this->tokenizer.tokenize(read_line, ' ');
-        this->token_histogram.add_tokens(this->tokenizer.get_tokens());
-        tokens_in_mem += this->tokenizer.get_tokens().size();
         this->tokenizer.reset_tokens();
 
-        if (tokens_in_mem >= commit_every) {
-            std::unordered_map<Token, unsigned long> histogram = this->token_histogram.get_histogram();
-            for (const auto& row : histogram) {
-                Token to_insert = row.first;
-                unsigned long count = row.second;
-                this->insert_token_into_db(to_insert, count);
+        // Insert each token into the database.
+        std::for_each(this->tokenizer.get_tokens().begin(), this->tokenizer.get_tokens().end(),
+            [&](const Token& _to_insert) {
+                this->insert_token_into_db(_to_insert);
             }
-
-            // Reset everything.
-            this->token_histogram.reset();
-            tokens_in_mem = 0;
-        }
-    }
-
-    if (tokens_in_mem < commit_every) {
-        std::unordered_map<Token, unsigned long> histogram = this->token_histogram.get_histogram();
-        for (const auto& row : histogram) {
-            Token to_insert = row.first;
-            unsigned long count = row.second;
-            this->insert_token_into_db(to_insert, count);
-        }
+        );
     }
 }
 
@@ -107,16 +83,14 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name,
     std::vector<unsigned int> real_ngrams_to_train_with = _ngrams_to_train_with;
     std::for_each(real_ngrams_to_train_with.begin(), real_ngrams_to_train_with.end(),
         /**
-         * Set an ngram to -1 if we've already trained on that particular one.
+         * Set an ngram to 0 if we've already trained on that particular one.
          */
         [&](unsigned int& _ngram) {
             if (this->already_trained_on(_file_name, _ngram)) {
                 _ngram = 0;
             }
         }
-    );
-
-    // to be continued...
+    );    
 }
 
 /**
