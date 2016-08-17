@@ -36,6 +36,7 @@ MySQLInterface::~MySQLInterface () {
     if (this->last_result) {
         delete this->last_result;
     }
+    this->insertion_thread->stop();
     this->db_connection->close();
     delete this->db_connection;
 }
