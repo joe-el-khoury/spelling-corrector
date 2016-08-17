@@ -4,7 +4,6 @@
 #include <connection.h>
 #include <statement.h>
 
-#include <atomic>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
