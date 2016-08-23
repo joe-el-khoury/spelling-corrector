@@ -8,10 +8,24 @@ void Ngram::add (const Token& _to_add) {
 }
 
 /**
+ * Gets the index we're at int the token list for the particular n.
+ */
+unsigned int Ngram::get_at_index (unsigned int _n) const {
+    auto got = this->n_and_at_index.find(_n);
+    if (got == this->n_and_at_index.end()) {
+        return 0;
+    } else {
+        return got->second;
+    }
+}
+
+/**
  * Checks whether there are any more ngrams to get from the list of tokens.
  */
 bool Ngram::more (unsigned int _n) const {
-    return _n <= this->tokens.size();
+    // joe elie jack john rachel chris sam
+    unsigned int at_index = this->get_at_index(_n);
+    return at_index <= (this->tokens.size() - _n);// && _n <= this->tokens.size();
 }
 
 /**
@@ -20,17 +34,21 @@ bool Ngram::more (unsigned int _n) const {
  */
 std::vector<Token> Ngram::get_ngram (unsigned int _n) {
     if (!this->more(_n)) {
-        return {};
+        return std::vector<Token>();
     }
 
-    // Construct the vector to return.
+    // Construct the vector we are returning.
     std::vector<Token> ret;
     ret.reserve(_n);
 
-    // Insert into the vector n tokens from the beginning, and remove the first
-    // token from the list of tokens.
-    ret.insert(ret.end(), this->tokens.begin(), this->tokens.begin()+_n);
-    this->tokens.pop_front();
+    // Insert the new n into the hash table if it doesn't exist.
+    unsigned int at_index = this->get_at_index(_n);
+    if (at_index == 0) {
+        this->n_and_at_index.insert({_n, 0});
+    }
+
+    ret.insert(ret.end(), this->tokens.begin()+at_index, this->tokens.begin()+at_index+_n);
+    (this->n_and_at_index)[_n]++;
 
     return ret;
 }
