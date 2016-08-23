@@ -46,11 +46,18 @@ MySQLInterface::~MySQLInterface () {
  */
 bool is_insert_query (const std::string& _sql_query) {
     // Predicate for the search algorithm.
-    // One small bug: if the word insert is part of a select query, for example, it
-    // will be incorrectly considered an insert query.
     struct is_insert {
-        bool operator() (char c1, char c2) {
-            return std::tolower(c1) == std::tolower(c2);
+        bool in_quote;
+        is_insert () {
+            in_quote = false;
+        }
+        
+        bool operator() (char _c1, char _c2) {
+            if (_c1 == '\'' || _c1 == '"') {
+                in_quote = !in_quote;
+            }
+
+            return in_quote ? false : std::tolower(_c1) == std::tolower(_c2);
         }
     };
 
