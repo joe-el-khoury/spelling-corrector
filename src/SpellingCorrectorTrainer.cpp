@@ -80,7 +80,7 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
 void SpellingCorrectorTrainer::train (const std::string& _file_name,
                                       const std::vector<unsigned int>& _ngrams_to_train_with) {
     for (unsigned int n : _ngrams_to_train_with) {
-        if (!(this->already_trained_on(_file_name, _ngram))) {
+        if (!(this->already_trained_on(_file_name, n))) {
             this->add_to_already_trained_on(_file_name, n);
         }
     }
