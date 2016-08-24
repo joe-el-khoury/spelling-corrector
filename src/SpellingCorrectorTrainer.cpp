@@ -79,18 +79,11 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
  */
 void SpellingCorrectorTrainer::train (const std::string& _file_name,
                                       const std::vector<unsigned int>& _ngrams_to_train_with) {
-    // A vector storing all ngrams we haven't yet trained with.
-    std::vector<unsigned int> real_ngrams_to_train_with = _ngrams_to_train_with;
-    std::for_each(real_ngrams_to_train_with.begin(), real_ngrams_to_train_with.end(),
-        /**
-         * Set an ngram to 0 if we've already trained on that particular one.
-         */
-        [&](unsigned int& _ngram) {
-            if (this->already_trained_on(_file_name, _ngram)) {
-                _ngram = 0;
-            }
+    for (unsigned int n : _ngrams_to_train_with) {
+        if (!(this->already_trained_on(_file_name, _ngram))) {
+            this->add_to_already_trained_on(_file_name, n);
         }
-    );    
+    }
 }
 
 /**
@@ -113,6 +106,22 @@ void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert, un
     std::string sql_query  = "INSERT INTO unigrams (word, count) VALUES (\""+token_str+"\", " + count_str + ") ";
                 sql_query += "ON DUPLICATE KEY UPDATE count=count+"+count_str+";";
     this->mysql_interface->exec_statement(sql_query);
+}
+
+/**
+ * Inserts the ngram into the database.
+ */
+void SpellingCorrectorTrainer::insert_ngram_into_db (Ngram& _ngram, unsigned int _n) {
+    // The table in the database which we will insert into will have the name "n + gram".
+    // So if we are inserting an ngram with n = 2, the table will be named 2gram.
+    // Similarly, if n = 3, the table will be named 3gram.
+    const std::string& table_name = std::to_string(_n) + "gram";
+    
+    std::string ngram_str;
+    do {
+        ngram_str = ngram_to_str(_ngram, _n, ' ');
+        std::cout << ngram_str << std::endl;
+    } while (ngram_str != std::string());
 }
 
 /**
