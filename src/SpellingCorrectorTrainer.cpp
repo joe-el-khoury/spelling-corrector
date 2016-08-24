@@ -152,7 +152,7 @@ void SpellingCorrectorTrainer::add_to_already_trained_on (const std::string& _fi
     std::string md5_hash = md5hasher::get_hash(_file_name);
 
     // Add the MD5 hash to the database.
-    std::string sql_query  = "INSERT IGNORE INTO files(md5_hash, ngram) VALUES(\""+md5_hash+", ";
+    std::string sql_query  = "INSERT IGNORE INTO files(md5_hash, ngram) VALUES(\""+md5_hash+"\", ";
                 sql_query += std::to_string(_ngram)+");";
     this->mysql_interface->exec_statement(sql_query);
 }
