@@ -23,8 +23,11 @@ unsigned int Ngram::get_at_index (unsigned int _n) const {
  * Checks whether there are any more ngrams to get from the list of tokens.
  */
 bool Ngram::more (unsigned int _n) const {
+    if (this->tokens.size() == 0) {
+        return false;
+    }
     unsigned int at_index = this->get_at_index(_n);
-    return at_index <= (this->tokens.size() - _n);// && _n <= this->tokens.size();
+    return at_index <= (this->tokens.size() - _n);
 }
 
 /**
