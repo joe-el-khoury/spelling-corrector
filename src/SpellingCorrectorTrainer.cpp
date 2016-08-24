@@ -7,30 +7,6 @@
 #include "util/MD5FileHasher.h"
 
 /**
- * Converts an ngram to a string.
- */
-std::string ngram_to_str (Ngram& _ngram, unsigned int _n, char _sep) {
-    std::vector<Token> ngram = _ngram.get_ngram(_n);
-    if (ngram.empty()) {
-        return std::string();
-    }
-
-    std::string ret;
-    std::for_each(ngram.begin(), ngram.end()-1,
-        /**
-         * Construct the string like so: "<token><sep><token>..."
-         */
-        [&](const Token& _token) {
-            ret += (_token.get_token_str() + _sep);
-        }
-    );
-    // The last token doesn't have a separation character after it.
-    ret += (ngram.end()-1)->get_token_str();
-
-    return ret;
-}
-
-/**
  * Initialize some member variables and stuff.
  */
 SpellingCorrectorTrainer::SpellingCorrectorTrainer () {
@@ -109,6 +85,30 @@ void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert, un
 }
 
 /**
+ * Converts an ngram to a string.
+ */
+std::string ngram_to_str (Ngram& _ngram, unsigned int _n, char _sep=' ') {
+    std::vector<Token> ngram = _ngram.get_ngram(_n);
+    if (ngram.empty()) {
+        return std::string();
+    }
+
+    std::string ret;
+    std::for_each(ngram.begin(), ngram.end()-1,
+        /**
+         * Construct the string like so: "<token><sep><token>..."
+         */
+        [&](const Token& _token) {
+            ret += (_token.get_token_str() + _sep);
+        }
+    );
+    // The last token doesn't have a separation character after it.
+    ret += (ngram.end()-1)->get_token_str();
+
+    return ret;
+}
+
+/**
  * Inserts the ngram into the database.
  */
 void SpellingCorrectorTrainer::insert_ngram_into_db (Ngram& _ngram, unsigned int _n) {
@@ -118,10 +118,9 @@ void SpellingCorrectorTrainer::insert_ngram_into_db (Ngram& _ngram, unsigned int
     const std::string& table_name = std::to_string(_n) + "gram";
     
     std::string ngram_str;
-    do {
-        ngram_str = ngram_to_str(_ngram, _n, ' ');
-        std::cout << ngram_str << std::endl;
-    } while (ngram_str != std::string());
+    while (_ngram.more(_n)) {
+        ngram_str = ngram_to_str(_ngram, _n);
+    }
 }
 
 /**
