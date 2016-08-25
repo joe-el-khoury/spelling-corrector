@@ -37,17 +37,25 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
         // Read a whole line from the file.
         read_line = this->file_reader->read_up_to('\n');
 
-        // Tokenize the line and keep the tokens in memory in the token histogram.
+        // Tokenize the line.
         this->tokenizer.tokenize(read_line, ' ');
-        this->tokenizer.reset_tokens();
-
         // Insert each token into the database.
         std::for_each(this->tokenizer.get_tokens().begin(), this->tokenizer.get_tokens().end(),
             [&](const Token& _to_insert) {
                 this->insert_token_into_db(_to_insert);
             }
         );
+        
+        // Reset the tokenizer.
+        this->tokenizer.reset_tokens();
     }
+}
+
+void pv (const std::vector<Token>& _v) {
+    for (const Token& tk : _v) {
+        std::cout << tk.get_token_str() << " ";
+    }
+    std::cout << std::endl;
 }
 
 /**
@@ -55,9 +63,30 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
  */
 void SpellingCorrectorTrainer::train (const std::string& _file_name,
                                       const std::vector<unsigned int>& _ngrams_to_train_with) {
+    Ngram ngram;
+    this->file_reader = std::make_unique<FileReader>(_file_name);
+    std::string read_line;
+    while (!(this->file_reader->done_reading)) {
+        read_line = this->file_reader->read_up_to('\n');
+
+        // Tokenize the line.
+        this->tokenizer.tokenize(read_line, ' ');
+
+        // Add the tokens to the ngram.
+        std::for_each(this->tokenizer.get_tokens().begin(), this->tokenizer.get_tokens().end(),
+            [&](const Token& _to_add) {
+                ngram.add(_to_add);
+            }
+        );
+
+        this->tokenizer.reset_tokens();
+    }
+
+    // Add all the ngrams to the database.
     for (unsigned int n : _ngrams_to_train_with) {
         if (!(this->already_trained_on(_file_name, n))) {
             this->add_to_already_trained_on(_file_name, n);
+            this->insert_ngram_into_db(ngram, n);
         }
     }
 }
@@ -118,8 +147,12 @@ void SpellingCorrectorTrainer::insert_ngram_into_db (Ngram& _ngram, unsigned int
     const std::string& table_name = std::to_string(_n) + "gram";
     
     std::string ngram_str;
+    std::string sql_query;
     while (_ngram.more(_n)) {
         ngram_str = ngram_to_str(_ngram, _n);
+        sql_query  = "INSERT INTO "+table_name+"(word) VALUES (\""+ngram_str+"\") ";
+        sql_query += "ON DUPLICATE KEY UPDATE count=count+1;";
+        this->mysql_interface->exec_statement(sql_query);
     }
 }
 
