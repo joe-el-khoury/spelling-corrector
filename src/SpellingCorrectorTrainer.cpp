@@ -51,13 +51,6 @@ void SpellingCorrectorTrainer::train (const std::string& _file_name) {
     }
 }
 
-void pv (const std::vector<Token>& _v) {
-    for (const Token& tk : _v) {
-        std::cout << tk.get_token_str() << " ";
-    }
-    std::cout << std::endl;
-}
-
 /**
  * Same as the training function above, but allows you to train with a specified number of ngrams.
  */
