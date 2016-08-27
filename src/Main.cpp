@@ -44,6 +44,9 @@ int main (int argc, char const* argv[]) {
                 n = 0;
             }
         }
+
+        SpellingCorrectorTrainer spt;
+        spt.train(training_file, ngrams_to_train_with);
     } catch (...) {
         std::cout << training_desc;
         return 1;
