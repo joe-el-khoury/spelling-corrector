@@ -12,11 +12,12 @@ typedef std::unordered_map<std::string, std::string> config;
 class DatabaseConfigReader {
 public:
     DatabaseConfigReader (const std::string&);
-    config get_config_data ();
 
-    mysql_interface::db_info config_to_db_info (config&);
+    mysql_interface::db_info get_db_info ();
 private:
     boost::property_tree::ptree json_tree;
+    void get_config_data ();
+    config config_data;
 };
 
 #endif /* DATABASECONFIGREADER_H */
