@@ -9,15 +9,15 @@ LFLAGS = -lmysqlcppconn -lcrypto -lboost_program_options -lboost_iostreams -lpth
 
 .PHONY: directories
 
-all: directories bin/SpellingCorrector
+all: directories bin/SpellingCorrectorTrainer
 
 directories: bin
 
 bin:
 	mkdir bin
 
-bin/SpellingCorrector : $(OBJS)
-	$(CC) -o bin/SpellingCorrector $(OBJS) $(LFLAGS)
+bin/SpellingCorrectorTrainer : $(OBJS)
+	$(CC) -o bin/SpellingCorrectorTrainer $(OBJS) $(LFLAGS)
 
 bin/Main.o : src/Main.cpp src/SpellingCorrector.h src/SpellingCorrectorTrainer.h src/Ngram.h
 	$(CC) $(CFLAGS) src/Main.cpp -o bin/Main.o
