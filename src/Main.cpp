@@ -10,6 +10,7 @@ namespace po = boost::program_options;
 
 int main (int argc, char const* argv[]) {
     std::vector<unsigned int> ngrams_to_train_with;
+    const unsigned int max_n = 5;
     std::string training_file;
     
     po::options_description training_desc("Spelling corrector training");
@@ -22,7 +23,8 @@ int main (int argc, char const* argv[]) {
                                                     "The higher the number, "
                                                     "the better the spelling correction will be, "
                                                     "but the slower the training will be. "
-                                                    "It is recommended to use 1 and 2.")
+                                                    "It is recommended to use 1 and 2. The maximum "
+                                                    "n is 5.")
         
         ("train,t", po::value<decltype(training_file)>(&training_file)
                                         ->value_name("path/to/file")->required(),
@@ -36,6 +38,12 @@ int main (int argc, char const* argv[]) {
         }
         po::store(po::command_line_parser(argc, argv).options(training_desc).run(), vm);
         po::notify(vm);
+        // Make sure n does not exceed the maximum n.
+        for (auto& n : ngrams_to_train_with) {
+            if (n > max_n) {
+                n = 0;
+            }
+        }
     } catch (...) {
         std::cout << training_desc;
         return 1;
