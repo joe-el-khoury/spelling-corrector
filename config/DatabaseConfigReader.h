@@ -7,6 +7,8 @@
 
 #include "../src/util/MySQLInterface.h"
 
+namespace bpt = boost::property_tree;
+
 typedef std::unordered_map<std::string, std::string> config;
 
 class DatabaseConfigReader {
@@ -15,9 +17,14 @@ public:
 
     mysql_interface::db_info get_db_info ();
 private:
-    boost::property_tree::ptree json_tree;
+    bpt::ptree config_json_tree;
     void get_config_data ();
     config config_data;
+    
+    const std::string auth_file = "config/auth.json";
+    bpt::ptree auth_json_tree;
+    void get_auth_data ();
+    config auth_data;
 };
 
 #endif /* DATABASECONFIGREADER_H */
