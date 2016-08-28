@@ -1,7 +1,7 @@
 OBJS = bin/Main.o bin/FileReader.o bin/Token.o bin/TokenHistogram.o \
 	bin/Tokenizer.o bin/SpellingCorrector.o bin/TokenEditor.o bin/IteratorInterface.o \
 	bin/MySQLInterface.o bin/DatabaseConfigReader.o bin/SpellingCorrectorTrainer.o \
-	bin/Ngram.o bin/MySQLInsertionThread.o
+	bin/Ngram.o bin/MySQLInsertionThread.o bin/JSONReader.o
 CC = g++
 DEBUG = -g
 CFLAGS = -c -Wall -std=c++14 -I/usr/include/cppconn -lpthread $(DEBUG)
@@ -57,6 +57,9 @@ bin/Ngram.o : src/Ngram.* src/Token.h
 
 bin/MySQLInsertionThread.o : src/util/MySQLInsertionThread.*
 	$(CC) $(CFLAGS) src/util/MySQLInsertionThread.cpp -o bin/MySQLInsertionThread.o
+
+bin/JSONReader.o : config/JSONReader.*
+	$(CC) $(CFLAGS) config/JSONReader.cpp -o bin/JSONReader.o
 
 clean:
 	rm -rf bin/*
