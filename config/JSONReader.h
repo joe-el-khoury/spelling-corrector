@@ -14,8 +14,7 @@ namespace json_reader {
 
 class JSONReader {
 public:
-    JSONReader (const std::string&);
-
+    void read_file (const std::string&);
     json_reader::json_data get_data ();
 private:
     bpt::ptree json_tree;
