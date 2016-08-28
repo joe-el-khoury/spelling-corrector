@@ -15,7 +15,7 @@ namespace json_reader {
 
 class JSONReader {
 public:
-    json_reader::json_data get_data (const std::string&);
+    json_reader::json_data get_json_data (const std::string&);
 };
 
 #endif /* JSONREADER_H */

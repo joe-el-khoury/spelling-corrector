@@ -3,7 +3,7 @@
 /**
  * Loads the JSON data into a hash table.
  */
-json_reader::json_data get_json_data (const std::string& _file_name) {
+json_reader::json_data JSONReader::get_json_data (const std::string& _file_name) {
     bpt::ptree json_tree;
     try {
         bpt::read_json(_file_name, json_tree);
