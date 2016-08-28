@@ -5,6 +5,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/exceptions.hpp>
 
 namespace bpt = boost::property_tree;
 
@@ -18,7 +19,6 @@ public:
     json_reader::json_data get_data ();
 private:
     bpt::ptree json_tree;
-    void load_json_tree ();
 };
 
 #endif /* JSONREADER_H */
