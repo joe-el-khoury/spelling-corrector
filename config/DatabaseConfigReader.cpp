@@ -1,5 +1,3 @@
-#include <boost/property_tree/json_parser.hpp>
-
 #include "DatabaseConfigReader.h"
 
 /**
@@ -7,36 +5,9 @@
  * It's a small file and will not be in memory for long so it's alright.
  */
 DatabaseConfigReader::DatabaseConfigReader (const std::string& _config_file_name) {
-    bpt::read_json(_config_file_name, this->config_json_tree);
-    bpt::read_json(this->auth_file, this->auth_json_tree);
-    this->get_config_data();
-    this->get_auth_data();
-}
-
-/**
- * Read all the config data into a hash table.
- */
-void DatabaseConfigReader::get_config_data () {
-    for (const bpt::ptree::value_type& row : (this->config_json_tree).get_child("config")) {
-        // Get the key and value from the JSON.
-        std::string key = row.first;
-        std::string val = row.second.data();
-
-        this->config_data.insert({key, val});
-    }
-}
-
-/**
- * Read all the authentication data into a hash table.
- */
-void DatabaseConfigReader::get_auth_data () {
-    for (const bpt::ptree::value_type& row : (this->auth_json_tree).get_child("auth")) {
-        // Get the key and value from the JSON.
-        std::string key = row.first;
-        std::string val = row.second.data();
-
-        this->auth_data.insert({key, val});
-    }
+    JSONReader json_reader;
+    this->config_data = json_reader.get_json_data(_config_file_name);
+    this->auth_data   = json_reader.get_json_data(this->auth_file);
 }
 
 /**
