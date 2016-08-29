@@ -5,9 +5,11 @@
  * It's a small file and will not be in memory for long so it's alright.
  */
 DatabaseConfigReader::DatabaseConfigReader (const std::string& _config_file_name) {
-    JSONReader json_reader;
-    this->config_data = json_reader.get_json_data(_config_file_name);
-    this->auth_data   = json_reader.get_json_data(this->auth_file);
+    JSONReader auth_reader(this->auth_file);
+    this->auth_data = auth_reader.get_json_data("auth");
+    
+    JSONReader conf_reader(_config_file_name);
+    this->config_data = conf_reader.get_json_data("config");
 }
 
 /**
