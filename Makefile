@@ -49,7 +49,7 @@ bin/IteratorInterface.o : src/util/IteratorInterface.*
 bin/MySQLInterface.o : src/util/MySQLInterface.* src/util/MySQLInsertionThread.h
 	$(CC) $(CFLAGS) src/util/MySQLInterface.cpp -o bin/MySQLInterface.o
 
-bin/DatabaseConfigReader.o : config/DatabaseConfigReader.* src/util/MySQLInterface.h
+bin/DatabaseConfigReader.o : config/DatabaseConfigReader.* src/util/MySQLInterface.h config/JSONReader.h
 	$(CC) $(CFLAGS) config/DatabaseConfigReader.cpp -o bin/DatabaseConfigReader.o
 
 bin/Ngram.o : src/Ngram.* src/Token.h
