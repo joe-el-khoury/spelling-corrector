@@ -44,3 +44,36 @@ json_reader::json_data JSONReader::get_json_data (const std::string& _parent_nam
 
     return ret;
 }
+
+/**
+ * Loads the JSON data from the property tree in order.
+ */
+json_reader::ordered_json_data JSONReader::get_json_data_in_order () {
+    json_reader::ordered_json_data ret;
+    // Go through the JSON tree.
+    for (const bpt::ptree::value_type& row : json_tree) {
+        std::string key = row.first;
+        std::string val = row.second.data();
+
+        ret.insert({key, val});
+    }
+
+    return ret;
+}
+
+/**
+ * Gets the JSON data of a parent in order.
+ */
+json_reader::ordered_json_data JSONReader::get_json_data_in_order (const std::string& _parent_name) {
+    json_reader::ordered_json_data ret;
+    // Go through the JSON tree from the parent.
+    for (const boost::property_tree::ptree::value_type& row : (this->json_tree).get_child(_parent_name)) {
+        // Get the key and value from the JSON.
+        std::string key = row.first;
+        std::string val = row.second.data();
+
+        ret.insert({key, val});
+    }
+
+    return ret;
+}
