@@ -21,7 +21,6 @@ json_reader::json_data JSONReader::get_json_data () {
     for (const bpt::ptree::value_type& row : json_tree) {
         std::string key = row.first;
         std::string val = row.second.data();
-        std::cout << "(key=" << key << ", val=" << val << ");" << std::endl;
 
         ret.insert({key, val});
     }
