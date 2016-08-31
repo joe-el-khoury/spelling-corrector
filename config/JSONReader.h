@@ -47,6 +47,8 @@ namespace json_reader {
             return this->data.cend();
         }
     };
+
+    typedef std::vector<std::string> json_keys;
 } /* json_reader */
 
 class JSONReader {
@@ -59,6 +61,10 @@ public:
     // Get the data in order.
     json_reader::ordered_json_data get_json_data_in_order ();
     json_reader::ordered_json_data get_json_data_in_order (const std::string&);
+
+    // Get the keys in the JSON files.
+    json_reader::json_keys get_json_keys ();
+    json_reader::json_keys get_json_keys (const std::string&);
 private:
     bpt::ptree json_tree;
 };

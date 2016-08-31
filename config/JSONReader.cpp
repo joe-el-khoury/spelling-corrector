@@ -77,3 +77,31 @@ json_reader::ordered_json_data JSONReader::get_json_data_in_order (const std::st
 
     return ret;
 }
+
+/**
+ * Gets the keys in the JSON file.
+ */
+json_reader::json_keys JSONReader::get_json_keys () {
+    json_reader::json_keys ret;
+    // Go through the JSON tree.
+    for (const boost::property_tree::ptree::value_type& row : this->json_tree) {
+        std::string key = row.first;
+        ret.push_back(key);
+    }
+
+    return ret;
+}
+
+/**
+ * Gets the keys in the JSON file from the parent.
+ */
+json_reader::json_keys JSONReader::get_json_keys (const std::string& _parent_name) {
+    json_reader::json_keys ret;
+    // Go through the JSON tree from the parent.
+    for (const boost::property_tree::ptree::value_type& row : (this->json_tree).get_child(_parent_name)) {
+        std::string key = row.first;
+        ret.push_back(key);
+    }
+
+    return ret;
+}
