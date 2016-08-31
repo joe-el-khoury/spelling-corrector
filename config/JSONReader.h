@@ -18,8 +18,8 @@ namespace json_reader {
     struct ordered_json_data {
         std::vector<std::pair<std::string, std::string>> data;
 
-        void insert (std::string&& _k, std::string&& _v) {
-            this->data.push_back({_k, _v});
+        void insert (std::pair<std::string, std::string>&& _pair) {
+            this->data.push_back(_pair);
         }
 
         std::string operator[] (const std::string& _key) {
