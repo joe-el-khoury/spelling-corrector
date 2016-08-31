@@ -16,7 +16,8 @@ namespace json_reader {
     typedef std::unordered_map<std::string, std::string> json_data;
 
     struct ordered_json_data {
-        std::vector<std::pair<std::string, std::string>> data;
+        typedef std::vector<std::pair<std::string, std::string>> vector_pair;
+        vector_pair data;
 
         void insert (std::pair<std::string, std::string>&& _pair) {
             this->data.push_back(_pair);
@@ -30,6 +31,20 @@ namespace json_reader {
             }
 
             return std::string();
+        }
+
+        // Simple overloads.
+        vector_pair::iterator begin () {
+            return this->data.begin();
+        }
+        vector_pair::iterator end () {
+            return this->data.end();
+        }
+        vector_pair::const_iterator cbegin () const {
+            return this->data.cbegin();
+        }
+        vector_pair::const_iterator cend () const {
+            return this->data.cend();
         }
     };
 } /* json_reader */
