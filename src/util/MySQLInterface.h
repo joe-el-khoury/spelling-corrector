@@ -7,9 +7,6 @@
 #include <resultset.h>
 
 #include <memory>
-#include <thread>
-#include <mutex>
-#include <queue>
 
 #include "MySQLInsertionThread.h"
 
