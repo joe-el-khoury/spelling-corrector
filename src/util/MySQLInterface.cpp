@@ -21,12 +21,17 @@ MySQLInterface::MySQLInterface (const mysql_interface::db_info& _db_info) {
     std::string db_password = _db_info.db_password;
     std::string db_url      = construct_db_url(_db_info);
 
-    // Connect to the database.
-    sql::Driver* driver = get_driver_instance();
-    this->db_connection = driver->connect(db_url, db_uname, db_password);
+    try {
+        // Connect to the database.
+        sql::Driver* driver = get_driver_instance();
+        this->db_connection = driver->connect(db_url, db_uname, db_password);
 
-    // Initiaize the insertion thread with the database connection.
-    this->insertion_thread = std::make_unique<MySQLInsertionThread>(this->db_connection);
+        // Initiaize the insertion thread with the database connection.
+        this->insertion_thread = std::make_unique<MySQLInsertionThread>(this->db_connection);
+    
+    } catch (sql::SQLException &e) {
+        throw e;
+    }
 }
 
 /**

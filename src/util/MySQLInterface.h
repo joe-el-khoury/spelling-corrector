@@ -5,6 +5,7 @@
 #include <connection.h>
 #include <statement.h>
 #include <resultset.h>
+#include <exception.h>
 
 #include <memory>
 
