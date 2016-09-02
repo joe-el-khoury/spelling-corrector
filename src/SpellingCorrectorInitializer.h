@@ -13,6 +13,9 @@ class SpellingCorrectorInitializer {
 public:
     bool is_initialized ();
     void initialize ();
+private:
+    std::vector<std::string> missing_databases;
+    std::unordered_map<std::string, std::vector<std::string>> database_and_missing_tables;
 };
 
 #endif /* SPELLINGCORRECTORINITIALIZER_H */
