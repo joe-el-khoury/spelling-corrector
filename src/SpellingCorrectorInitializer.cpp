@@ -1,8 +1,7 @@
 #include "SpellingCorrectorInitializer.h"
 
 /**
- * Checks if all databases are setup, and the config files are up
- * to date.
+ * Checks if all databases are setup, and the config files are up to date.
  */
 bool SpellingCorrectorInitializer::is_initialized () {
     std::unique_ptr<JSONReader> reader;
@@ -15,8 +14,6 @@ bool SpellingCorrectorInitializer::is_initialized () {
 
     // Keep track of all missing databases and config files.
     std::vector<std::string> missing_config_files;
-    std::vector<std::string> missing_databases;
-    std::unordered_map<std::string, std::vector<std::string>> database_and_missing_tables;
     
     std::unique_ptr<MySQLInterface> mysql;
     std::unique_ptr<DatabaseConfigReader> config_reader;
@@ -46,7 +43,7 @@ bool SpellingCorrectorInitializer::is_initialized () {
         bool database_exists = (mysql->get_num_rows_returned() == 1);
 
         if (!database_exists) {
-            missing_databases.push_back(database_name);
+            this->missing_databases.push_back(database_name);
             continue;
         }
 
@@ -60,10 +57,10 @@ bool SpellingCorrectorInitializer::is_initialized () {
 
             bool table_exists = (mysql->get_num_rows_returned() == 1);
             if (!table_exists) {
-                if (database_and_missing_tables.find(database_name) == database_and_missing_tables.end()) {
-                    database_and_missing_tables.insert({database_name, {table_name}});
+                if (this->database_and_missing_tables.find(database_name) == this->database_and_missing_tables.end()) {
+                    this->database_and_missing_tables.insert({database_name, {table_name}});
                 } else {
-                    database_and_missing_tables[database_name].push_back(table_name);
+                    this->database_and_missing_tables[database_name].push_back(table_name);
                 }
             }
         }
@@ -76,16 +73,16 @@ bool SpellingCorrectorInitializer::is_initialized () {
         }
         std::cerr << std::endl;
     }
-    if (!missing_databases.empty()) {
+    if (!this->missing_databases.empty()) {
         std::cerr << "Missing databases:\n";
-        for (const std::string& missing_database : missing_databases) {
+        for (const std::string& missing_database : this->missing_databases) {
             std::cerr << "\t*  " << missing_database << "\n";
         }
         std::cerr << std::endl;
     }
-    if (!database_and_missing_tables.empty()) {
+    if (!this->database_and_missing_tables.empty()) {
         std::cerr << "Missing tables:\n";
-        for (const auto& db_and_missing_tables : database_and_missing_tables) {
+        for (const auto& db_and_missing_tables : this->database_and_missing_tables) {
             std::string db_name = db_and_missing_tables.first;
             std::vector<std::string> missing_tables = db_and_missing_tables.second;
             if (!missing_tables.empty()) {
@@ -98,5 +95,11 @@ bool SpellingCorrectorInitializer::is_initialized () {
         std::cerr << std::endl;
     }
 
-    return missing_config_files.empty() && missing_databases.empty() && database_and_missing_tables.empty();
+    return missing_config_files.empty() && this->missing_databases.empty() && this->database_and_missing_tables.empty();
+}
+
+/**
+ * Initializes the spelling corrector, assuming everything is present (config files needed, auth data, etc.).
+ */
+void SpellingCorrectorInitializer::initialize () {
 }
