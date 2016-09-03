@@ -85,13 +85,20 @@ void MySQLInterface::exec_statement (const std::string& _sql_query) {
         return;
     }
     
-    // Create the SQL statement and execute it.
-    sql::Statement* stmt = this->db_connection->createStatement();
-    bool returned_result = stmt->execute(_sql_query);
+    sql::Statement* stmt = nullptr;
+    bool result_was_returned;
+    try {
+        // Create the SQL statement and execute it.
+        stmt = this->db_connection->createStatement();
+        result_was_returned = stmt->execute(_sql_query);
+    } catch (sql::SQLException& e) {
+        delete stmt;
+        throw e;
+    }
 
     // Executing the statement returns a boolean value.
     // If true is returned, then the statement was a "getter".
-    if (returned_result) {
+    if (result_was_returned) {
         // Get the result set and the number of rows that were returned.
         this->last_result = stmt->getResultSet();
         this->num_rows_returned = this->last_result->rowsCount();
