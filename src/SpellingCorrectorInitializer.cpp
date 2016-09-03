@@ -121,7 +121,9 @@ bool SpellingCorrectorInitializer::is_initialized () {
 void SpellingCorrectorInitializer::initialize () {
     // Check if everything has been initialized and fill in member data.
     if (!this->been_checked) {
-        this->is_initialized();
+        if (this->is_initialized()) {
+            return;
+        }
     }
     
     // Everything we need right here!
