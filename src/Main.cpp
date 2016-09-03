@@ -5,6 +5,7 @@
 #include <boost/program_options.hpp>
 
 #include "SpellingCorrectorTrainer.h"
+#include "SpellingCorrectorInitializer.h"
 
 namespace po = boost::program_options;
 
@@ -16,6 +17,7 @@ int main (int argc, char const* argv[]) {
     po::options_description training_desc("Spelling corrector training");
     training_desc.add_options()
         ("help,h", "View available options.")
+        ("init,i", "Initialize the spelling corrector backend (databases, configuration files, etc.)")
         ("ngram,n", po::value<decltype(ngrams_to_train_with)>(&ngrams_to_train_with)
                                         ->value_name("n")->multitoken()
                                         ->default_value(std::vector<unsigned int>(1, 1), "1"),
@@ -32,13 +34,21 @@ int main (int argc, char const* argv[]) {
 
     po::variables_map vm;
     try {
+        po::store(po::command_line_parser(argc, argv).options(training_desc).run(), vm);
         if (vm.count("help")) {
-            std::cout << training_desc;
+            std::cerr << training_desc;
             return 0;
         }
-        po::store(po::command_line_parser(argc, argv).options(training_desc).run(), vm);
+        if (vm.count("init")) {
+            std::cout << "Initializing..." << std::endl;
+            // Initialize the backend.
+            SpellingCorrectorInitializer initializer;
+            initializer.initialize();
+            return 0;
+        }
         po::notify(vm);
-        // Make sure n does not exceed the maximum n.
+        
+        // Make sure n does not exceed the maximum allowed n.
         for (auto& n : ngrams_to_train_with) {
             if (n > max_n) {
                 n = 0;
@@ -48,7 +58,7 @@ int main (int argc, char const* argv[]) {
         SpellingCorrectorTrainer spt;
         spt.train(training_file, ngrams_to_train_with);
     } catch (...) {
-        std::cout << training_desc;
+        std::cerr << training_desc;
         return 1;
     }
     return 0;
