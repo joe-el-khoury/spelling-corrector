@@ -26,7 +26,7 @@ struct db_info {
 
 class MySQLInterface {
 public:
-    MySQLInterface (const mysql_interface::db_info&);
+    MySQLInterface (const mysql_interface::db_info&, bool=true);
     ~MySQLInterface ();
 
     void exec_statement (const std::string&);
