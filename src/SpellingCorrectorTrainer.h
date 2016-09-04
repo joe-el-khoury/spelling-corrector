@@ -2,6 +2,8 @@
 #define SPELLINGCORRECTORTRAINER_H
 
 #include <memory>
+#include <exception>
+#include <stdexcept>
 
 #include "util/FileReader.h"
 #include "util/MySQLInterface.h"
@@ -31,4 +33,4 @@ private:
     bool already_trained_on (const std::string&, unsigned int=1);
 };
 
-#endif
+#endif /* SPELLINGCORRECTORTRAINER_H */

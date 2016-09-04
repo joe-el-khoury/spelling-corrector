@@ -1,8 +1,9 @@
 #include <unordered_map>
 #include <algorithm>
 
-#include "Ngram.h"
 #include "SpellingCorrectorTrainer.h"
+#include "SpellingCorrectorInitializer.h"
+#include "Ngram.h"
 #include "../config/DatabaseConfigReader.h"
 #include "util/MD5FileHasher.h"
 
@@ -10,6 +11,13 @@
  * Initialize some member variables and stuff.
  */
 SpellingCorrectorTrainer::SpellingCorrectorTrainer () {
+    // First, check if everything is initialized, and throw an error if that's not
+    // the case.
+    SpellingCorrectorInitializer spi;
+    if (!(spi.is_initialized())) {
+        throw std::runtime_error("Backend is not initialized.");
+    }
+    
     // Read information from the configuration file.
     DatabaseConfigReader conf_reader("config/training_data_config.json");
     // Connect to the database.
