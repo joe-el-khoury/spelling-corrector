@@ -22,7 +22,7 @@ SpellingCorrectorTrainer::SpellingCorrectorTrainer () {
     DatabaseConfigReader conf_reader("config/training_data_config.json");
     // Connect to the database.
     mysql_interface::db_info db_info = conf_reader.get_db_info();
-    this->mysql_interface = std::make_unique<MySQLInterface>(db_info);
+    this->mysql_conn = std::make_unique<MySQLInterface>(db_info);
 }
 
 /**
@@ -97,7 +97,7 @@ void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert) {
     const std::string& token_str = _to_insert.get_token_str();
     std::string sql_query  = "INSERT INTO unigrams (word) VALUES (\""+token_str+"\") ";
                 sql_query += "ON DUPLICATE KEY UPDATE count=count+1;";
-    this->mysql_interface->exec_statement(sql_query);
+    this->mysql_conn->exec_statement(sql_query);
 }
 
 /**
@@ -109,7 +109,7 @@ void SpellingCorrectorTrainer::insert_token_into_db (const Token& _to_insert, un
     // Query to update the token count if it exists in the database, and add it with its count if it doesn't.
     std::string sql_query  = "INSERT INTO unigrams (word, count) VALUES (\""+token_str+"\", " + count_str + ") ";
                 sql_query += "ON DUPLICATE KEY UPDATE count=count+"+count_str+";";
-    this->mysql_interface->exec_statement(sql_query);
+    this->mysql_conn->exec_statement(sql_query);
 }
 
 /**
@@ -151,7 +151,7 @@ void SpellingCorrectorTrainer::insert_ngram_into_db (Ngram& _ngram, unsigned int
         ngram_str = ngram_to_str(_ngram, _n);
         sql_query  = "INSERT INTO "+table_name+"(word) VALUES (\""+ngram_str+"\") ";
         sql_query += "ON DUPLICATE KEY UPDATE count=count+1;";
-        this->mysql_interface->exec_statement(sql_query);
+        this->mysql_conn->exec_statement(sql_query);
     }
 }
 
@@ -170,9 +170,9 @@ bool SpellingCorrectorTrainer::already_trained_on (const std::string& _file_name
     // Get the rows with the MD5 hash of the file and the ngram.
     std::string sql_query  = "SELECT * FROM files WHERE md5_hash=\""+md5_hash+"\" and ";
                 sql_query += "ngram="+std::to_string(_ngram)+";";
-    this->mysql_interface->exec_statement(sql_query);
+    this->mysql_conn->exec_statement(sql_query);
 
-    return !(this->mysql_interface->get_num_rows_returned() == 0);
+    return !(this->mysql_conn->get_num_rows_returned() == 0);
 }
 
 /**
@@ -185,5 +185,5 @@ void SpellingCorrectorTrainer::add_to_already_trained_on (const std::string& _fi
     // Add the MD5 hash to the database.
     std::string sql_query  = "INSERT IGNORE INTO files(md5_hash, ngram) VALUES(\""+md5_hash+"\", ";
                 sql_query += std::to_string(_ngram)+");";
-    this->mysql_interface->exec_statement(sql_query);
+    this->mysql_conn->exec_statement(sql_query);
 }

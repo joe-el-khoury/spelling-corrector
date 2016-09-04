@@ -9,7 +9,6 @@
 #include "util/MySQLInterface.h"
 #include "Tokenizer.h"
 #include "Token.h"
-#include "TokenHistogram.h"
 #include "Ngram.h"
 
 class SpellingCorrectorTrainer {
@@ -22,7 +21,6 @@ private:
     // Used for training.
     std::unique_ptr<FileReader> file_reader;
     Tokenizer tokenizer;
-    TokenHistogram token_histogram;
     std::unique_ptr<MySQLInterface> mysql_interface;
 
     void insert_token_into_db (const Token&);
