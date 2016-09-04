@@ -1,11 +1,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include <boost/program_options.hpp>
+#include <exception>
 
 #include "SpellingCorrectorTrainer.h"
 #include "SpellingCorrectorInitializer.h"
+
+#include <boost/program_options.hpp>
 
 namespace po = boost::program_options;
 
@@ -55,8 +56,14 @@ int main (int argc, char const* argv[]) {
             }
         }
 
-        SpellingCorrectorTrainer spt;
-        spt.train(training_file, ngrams_to_train_with);
+        try {
+            SpellingCorrectorTrainer spt;
+            spt.train(training_file, ngrams_to_train_with);
+        
+        } catch (std::exception& e) {
+            std::cerr << e.what() << std::endl;
+            return 1;
+        }
     } catch (...) {
         std::cerr << training_desc;
         return 1;
