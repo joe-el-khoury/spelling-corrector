@@ -21,7 +21,7 @@ private:
     // Used for training.
     std::unique_ptr<FileReader> file_reader;
     Tokenizer tokenizer;
-    std::unique_ptr<MySQLInterface> mysql_interface;
+    std::unique_ptr<MySQLInterface> mysql_conn;
 
     void insert_token_into_db (const Token&);
     void insert_token_into_db (const Token&, unsigned long);
