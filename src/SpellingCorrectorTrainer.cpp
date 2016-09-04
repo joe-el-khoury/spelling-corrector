@@ -22,7 +22,7 @@ SpellingCorrectorTrainer::SpellingCorrectorTrainer () {
     DatabaseConfigReader conf_reader("config/training_data_config.json");
     // Connect to the database.
     mysql_interface::db_info db_info = conf_reader.get_db_info();
-    this->mysql_conn = std::make_unique<MySQLInterface>(db_info);
+    this->mysql_conn = std::make_unique<MySQLInterface>("training_data");
 }
 
 /**

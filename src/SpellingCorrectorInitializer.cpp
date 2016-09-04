@@ -39,7 +39,7 @@ bool SpellingCorrectorInitializer::is_initialized () {
 
         try {
             // Connect to the database.
-            mysql = std::make_unique<MySQLInterface>(config_reader->get_db_info(), false);
+            mysql = std::make_unique<MySQLInterface>(database_name, false);
         } catch (...) {
             std::cerr << "MySQL authentication error. Verify the credentials in config/auth.json are up to date." << std::endl;
             return false;
@@ -151,11 +151,8 @@ void SpellingCorrectorInitializer::initialize () {
         bool database_is_missing = std::find(this->missing_databases.begin(),
                                              this->missing_databases.end(),
                                              database_name) != this->missing_databases.end();
-        
-        std::string config_file_name = database_name + "_config.json";
         // Connect to the database.
-        config_reader = std::make_unique<DatabaseConfigReader>("config/"+config_file_name);
-        mysql         = std::make_unique<MySQLInterface>(config_reader->get_db_info(), false);
+        mysql = std::make_unique<MySQLInterface>(database_name, false);
         
         if (database_is_missing) {
             // Create the database before proceeding.
