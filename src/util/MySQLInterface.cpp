@@ -11,18 +11,33 @@ std::string construct_db_url (const mysql_interface::db_info& _db_info) {
 }
 
 /**
- * Create the connection to the database.
- * db_info contains information for connecting *directly* to the database, but sometimes it may not
- * exist, so the boolean value dictates whether it is allowed to connect just to the MySQL instance and
- * not to a specific database.
+ * Construct the path to the config file.
  */
-MySQLInterface::MySQLInterface (const mysql_interface::db_info& _db_info, bool _strict) {
+std::string construct_config_file_path (const std::string& _db_name) {
+    // The path follows the format: config/<name of database>_config.json
+    const std::string directory = "config";
+    const std::string config_file_path = directory+"/"+_db_name+"_config.json";
+
+    return config_file_path;
+}
+
+/**
+ * Create the connection to the database.
+ * _db_name is the name of the database to connect to, but sometimes it may not
+ * exist, so the boolean value dictates whether it is allowed to connect just to the MySQL instance and
+ * not to a specific database (if it's set to true it means it is required to connect to the said database.)
+ */
+MySQLInterface::MySQLInterface (const std::string& _db_name, bool _strict) {
     this->last_result = nullptr;
 
+    // Read the config data for the database.
+    DatabaseConfigReader config_reader(construct_config_file_path(_db_name));
+    mysql_interface::db_info db_info = config_reader.get_db_info();
+
     // Get the username, password, and URL of the database.
-    const std::string& db_uname    = _db_info.db_uname;
-    const std::string& db_password = _db_info.db_password;
-    const std::string& db_url      = construct_db_url(_db_info);
+    const std::string& db_uname    = db_info.db_uname;
+    const std::string& db_password = db_info.db_password;
+    const std::string& db_url      = construct_db_url(db_info);
 
     try {
         // Connect to the database.
@@ -36,7 +51,7 @@ MySQLInterface::MySQLInterface (const mysql_interface::db_info& _db_info, bool _
             try {
                 // Connect to JUST THE MySQL INSTANCE.
                 sql::Driver* driver = get_driver_instance();
-                this->db_connection = driver->connect(_db_info.db_url_prefix, db_uname, db_password);
+                this->db_connection = driver->connect(db_info.db_url_prefix, db_uname, db_password);
 
                 // Initialize the thread.
                 this->insertion_thread = std::make_unique<MySQLInsertionThread>(this->db_connection);
