@@ -4,8 +4,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "../src/util/MySQLInterface.h"
 #include "JSONReader.h"
+#include "../src/util/DBInfo.h"
 
 typedef std::unordered_map<std::string, std::string> config;
 
