@@ -24,6 +24,7 @@ private:
 
     // Stuff related to the backend.
     std::unique_ptr<MySQLInterface> mysql_conn;
+    bool word_in_db (const Token&);
 };
 
 #endif /* SPELLINGCORRECTOR_H */
