@@ -26,6 +26,7 @@ private:
     // Stuff related to the backend.
     std::unique_ptr<MySQLInterface> mysql_conn;
     std::tuple<Token, unsigned int> get_word_and_count (const Token&);
+    unsigned int get_word_count (const Token&);
     bool word_in_db (const Token&);
 };
 

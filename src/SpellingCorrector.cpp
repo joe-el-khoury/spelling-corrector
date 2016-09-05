@@ -34,11 +34,32 @@ std::tuple<Token, unsigned int> SpellingCorrector::get_word_and_count (const Tok
 }
 
 /**
+ * Get the number of times a word appears in the database.
+ */
+unsigned int SpellingCorrector::get_word_count (const Token& _word) {
+    unsigned int word_count;
+    try {
+        std::tie(std::ignore, word_count) = this->get_word_and_count(_word);
+    } catch (...) {
+        // The word doesn't exist.
+        return 0;
+    }
+
+    return word_count;
+}
+
+/**
  * Checks if a word is in the database (has been seen before).
  */
 bool SpellingCorrector::word_in_db (const Token& _word) {
-    this->mysql_conn->exec_statement("SELECT * FROM 1gram WHERE word=\""+_word.get_token_str()+"\";");
-    return (this->mysql_conn->get_num_rows_returned() >= 1);
+    try {
+        this->get_word_and_count(_word);
+    } catch (...) {
+        // The word doesn't exist.
+        return false;
+    }
+
+    return true;
 }
 
 Token SpellingCorrector::correct_word (const Token& _to_correct) {
