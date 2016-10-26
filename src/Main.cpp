@@ -5,6 +5,7 @@
 
 #include "SpellingCorrectorTrainer.h"
 #include "SpellingCorrectorInitializer.h"
+#include "SpellingCorrector.h"
 
 #include <boost/program_options.hpp>
 
