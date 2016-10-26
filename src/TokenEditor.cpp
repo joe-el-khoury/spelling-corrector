@@ -191,16 +191,16 @@ inserts& TokenEditor::get_insert_edits (inserts&& _inserts, const Token& _to_edi
     return _inserts;
 }
 
-const edits& TokenEditor::get_edits (edits& _edits, const Token& _to_edit, unsigned int _edit_distance=1) {
+edits TokenEditor::get_edits (const Token& _to_edit, unsigned int _edit_distance=1) {
     // Used to store edits.
     deletes    delete_edits;
     transposes transpose_edits;
     replaces   replace_edits;
     inserts    insert_edits;
     
-    _edits = {_to_edit};
+    edits edits_ret = {_to_edit};
     for (unsigned int i = 0; i < _edit_distance; ++i) {
-        for (const Token& edit : _edits) {
+        for (const Token& edit : edits_ret) {
             deletes    deletes_temp    = TokenEditor::get_delete_edits({}, edit);
             transposes transposes_temp = TokenEditor::get_transpose_edits({}, edit);
             replaces   replaces_temp   = TokenEditor::get_replace_edits({}, edit);
@@ -213,14 +213,14 @@ const edits& TokenEditor::get_edits (edits& _edits, const Token& _to_edit, unsig
             
         }
 
-        _edits = helper::merge<Token>({
-            _edits,
+        edits_ret = helper::merge<Token>({
+            edits_ret,
             delete_edits, transpose_edits,
             replace_edits, insert_edits
         });
     }
 
-    return _edits;
+    return edits_ret;
 }
 
 /**

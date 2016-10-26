@@ -17,7 +17,7 @@ typedef std::vector<split_pair> splits;
 
 class TokenEditor {
 public:
-    static const edits& get_edits (edits&, const Token&, unsigned int);
+    static edits get_edits (const Token&, unsigned int);
     static unsigned int get_edit_distance (const Token&, const Token&);
 private:
     // Edit functions.
