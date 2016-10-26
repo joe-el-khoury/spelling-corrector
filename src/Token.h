@@ -17,7 +17,7 @@ public:
     bool operator== (const Token&) const;
     bool operator== (const std::string&) const;
 
-    const std::vector<Token>& get_edits (unsigned int=1);
+    std::vector<Token> get_edits (unsigned int=1) const;
 
     // Used for cleaning up the token.
     void delimit_token ();
@@ -27,7 +27,6 @@ public:
 private:
     bool is_clean_char (char);
     std::string token_str;
-    std::vector<Token> token_edits;
 };
 
 #endif /* TOKEN_H */
